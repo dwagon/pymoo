@@ -10,16 +10,31 @@ class Game(models.Model):
     numplanets = models.IntegerField(default=10)
 
     def makeGalaxy(self):
-        from system.models import System, SystemCategory
         locs = self.getSystemLocations()
         for a, b in locs:
-            s = System()
-            s.x = a
-            s.y = b
-            s.game = self
-            s.category = SystemCategory.objects.get(name='sc')
-            s.name = ""
-            s.save()
+            self.makeSystem(a, b)
+
+    def pickCategory(self):
+        from system.models import SystemCategory
+        sc = SystemCategory.objects.all()
+        totprob = sum([s.prob_existing for s in sc])
+        x = random.randrange(totprob)
+        p = 0
+        for s in sc:
+            p += s.prob_existing
+            if x < p:
+                return s
+
+    def makeSystem(self, x, y):
+        from system.models import System
+        s = System()
+        s.x = x
+        s.y = y
+        s.game = self
+        s.category = self.pickCategory()
+        s.name = ""
+        s.save()
+        s.makeOrbits()
 
     def getSystemLocations(self):
         locs = []
