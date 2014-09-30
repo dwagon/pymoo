@@ -30,6 +30,11 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=250)),
                 ('blockwarp', models.BooleanField(default=False)),
+                ('prob_nothing', models.IntegerField(default=0)),
+                ('prob_asteroid', models.IntegerField(default=0)),
+                ('prob_gasgiant', models.IntegerField(default=0)),
+                ('prob_planet', models.IntegerField(default=0)),
+                ('prob_existing', models.IntegerField(default=0)),
             ],
             options={
             },
