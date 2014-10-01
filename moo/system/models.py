@@ -51,6 +51,7 @@ class System(models.Model):
             use.used = True
             use.save()
             self.name = use.name
+        self.save()
 
     def makeOrbits(self):
         for o in range(MAX_ORBITS):
