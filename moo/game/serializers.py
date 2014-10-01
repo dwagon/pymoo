@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 
 class GameSerializer(serializers.ModelSerializer):
-    systems = serializers.RelatedField(many=True)
+    systems = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Game

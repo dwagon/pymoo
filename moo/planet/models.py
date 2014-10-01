@@ -12,7 +12,7 @@ class PlanetCondition(models.Model):
 class Planet(models.Model):
     name = models.CharField(max_length=250)
     condition = models.ForeignKey(PlanetCondition, null=True)
-    system = models.ForeignKey(System)
+    system = models.ForeignKey(System, related_name='planets')
     orbit = models.IntegerField()
     owner = models.ForeignKey(Race, null=True, default=None)
     population = models.IntegerField(default=0)
