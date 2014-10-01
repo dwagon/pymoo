@@ -52,7 +52,7 @@ def initial_data(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('system', '0003_system_names'),
+        ('system', '0002_systemcategory'),
     ]
 
     operations = [

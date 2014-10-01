@@ -19,20 +19,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=250)),
                 ('orbit', models.IntegerField()),
-                ('population', models.IntegerField()),
+                ('population', models.IntegerField(default=0)),
                 ('buildings', models.ManyToManyField(to='building.Building')),
-            ],
-            options={
-            },
-            bases=(models.Model,),
-        ),
-        migrations.CreateModel(
-            name='PlanetCategory',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=250)),
-                ('resource', models.IntegerField()),
-                ('fertility', models.IntegerField()),
             ],
             options={
             },
@@ -48,23 +36,6 @@ class Migration(migrations.Migration):
             },
             bases=(models.Model,),
         ),
-        migrations.CreateModel(
-            name='PlanetSize',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('size', models.IntegerField()),
-                ('maxpop', models.IntegerField()),
-            ],
-            options={
-            },
-            bases=(models.Model,),
-        ),
-        migrations.AddField(
-            model_name='planet',
-            name='category',
-            field=models.ForeignKey(to='planet.PlanetCategory'),
-            preserve_default=True,
-        ),
         migrations.AddField(
             model_name='planet',
             name='condition',
@@ -74,13 +45,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='planet',
             name='owner',
-            field=models.ForeignKey(to='race.Race'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='planet',
-            name='size',
-            field=models.ForeignKey(to='planet.PlanetSize'),
+            field=models.ForeignKey(default=None, to='race.Race', null=True),
             preserve_default=True,
         ),
         migrations.AddField(

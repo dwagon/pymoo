@@ -40,16 +40,27 @@ class Migration(migrations.Migration):
             },
             bases=(models.Model,),
         ),
+        migrations.CreateModel(
+            name='SystemName',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=250)),
+                ('used', models.BooleanField(default=False)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
         migrations.AddField(
             model_name='system',
             name='category',
-            field=models.ForeignKey(to='system.SystemCategory'),
+            field=models.ForeignKey(related_name=b'category', to='system.SystemCategory'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='system',
             name='game',
-            field=models.ForeignKey(to='game.Game'),
+            field=models.ForeignKey(related_name=b'systems', to='game.Game'),
             preserve_default=True,
         ),
         migrations.AddField(
