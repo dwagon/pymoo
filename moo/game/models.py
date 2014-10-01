@@ -34,6 +34,7 @@ class Game(models.Model):
         s.category = self.pickCategory()
         s.name = ""
         s.save()
+        s.assignName()
         s.makeOrbits()
 
     def getSystemLocations(self):
