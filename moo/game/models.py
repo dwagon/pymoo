@@ -9,6 +9,9 @@ class Game(models.Model):
     max_y = models.IntegerField(default=20)
     numplanets = models.IntegerField(default=10)
 
+    def __unicode__(self):
+        return "Game %s" % self.turn
+
     def makeGalaxy(self):
         locs = self.getSystemLocations()
         for a, b in locs:

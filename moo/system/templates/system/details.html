@@ -1,0 +1,15 @@
+<html>
+<body>
+<ul>
+<li> Name: {{system.name}}
+<li> Category: {{system.category}}
+<li> Location: {{system.x}}, {{system.y}}
+<li> Planets:
+    <ul>
+    {% for planet in planets %}
+        <li> <a href="{% url 'planetDetails' planet.id %}">{{planet.name}}</a>
+    {% endfor %}
+    </ul>
+</ul>
+</body>
+</html>

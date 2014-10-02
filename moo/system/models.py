@@ -22,7 +22,7 @@ class SystemCategory(models.Model):
     prob_existing = models.IntegerField(default=0)
 
     def __unicode__(self):
-        return "SystemCategory %s" % self.name
+        return self.name
 
 
 class System(models.Model):

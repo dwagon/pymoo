@@ -1,0 +1,10 @@
+<html>
+<body>
+<ul>
+<li> Name: {{planet.name}}
+<li> System: <a href="{% url 'systemDetails' planet.system.id %}">{{planet.system.name}}</a>
+<li> Condition: {{planet.condition}}
+<li> Orbit: {{planet.orbit}}
+</ul>
+</body>
+</html>

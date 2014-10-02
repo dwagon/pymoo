@@ -1,10 +1,11 @@
 from django.conf.urls import patterns, url
 
-from .views import makeGalaxy
+from .views import makeGalaxy, details
 
 urlpatterns = patterns(
     '',
-    url(r'^$', makeGalaxy, name='makeGalaxy'),
+    url(r'^details/(?P<game_id>\d+)$', details, name='gameDetails'),
+    url(r'^new$', makeGalaxy, name='makeGalaxy'),
 )
 
 # EOF

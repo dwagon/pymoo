@@ -1,0 +1,14 @@
+<html>
+<body>
+<ul>
+<li> Turn: {{game.turn}}
+<li> Num Systems: {{game.numplanets}}
+<li> Systems:
+    <ul>
+    {% for system in systems %}
+        <li> <a href="{% url 'systemDetails' system.id %}">{{system.name}}</a>
+    {% endfor %}
+    </ul>
+</ul>
+</body>
+</html>

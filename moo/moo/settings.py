@@ -31,6 +31,10 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
     )
 
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'moo/templates',),
+)
+
 # Application definition
 
 INSTALLED_APPS = (
