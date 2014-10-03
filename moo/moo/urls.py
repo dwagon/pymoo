@@ -11,9 +11,10 @@ urlpatterns = patterns(
 
     url(r'^game/', include('game.urls')),
     url(r'^planet/', include('planet.urls')),
+    url(r'^player/', include('player.urls')),
     url(r'^system/', include('system.urls')),
 
+    url(r'^api/v1/game/', include('game.apiurls')),
     url(r'^api/v1/planet/', include('planet.apiurls')),
     url(r'^api/v1/system/', include('system.apiurls')),
-    url(r'^api/v1/game/', include('game.apiurls')),
 )

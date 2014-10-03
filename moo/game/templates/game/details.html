@@ -3,6 +3,12 @@
 <ul>
 <li> Turn: {{game.turn}}
 <li> Num Systems: {{game.numplanets}}
+<li> Players:
+    <ul>
+    {% for plr in players %}
+        <li> <a href="{% url 'playerDetails' plr.id %}">{{plr.name}}</a>
+    {% endfor %}
+    </ul>
 <li> Systems:
     <ul>
     {% for system in systems %}

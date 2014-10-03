@@ -1,0 +1,20 @@
+<html>
+<body>
+<ul>
+<li> Name: {{player.name}}
+<li> Game: <a href="{% url 'gameDetails' player.game.id %}">Game</a>
+<li> Race: {{player.race}}
+<li> Credits: {{player.credits}}
+<li> Planets:
+    <ul>
+    {% if player.owned_planets %}
+        {% for planet in player.owned_planets %}
+            <li> <a href="{% url 'planetDetails' planet.id %}">{{planet.name}}</a>
+        {% endfor %}
+    {% else %}
+         <li> None
+    {% endif %}
+    </ul>
+</ul>
+</body>
+</html>
