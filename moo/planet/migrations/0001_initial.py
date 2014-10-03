@@ -7,9 +7,8 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('race', '0001_initial'),
-        ('system', '0001_initial'),
-        ('building', '0001_initial'),
+        ('player', '0001_initial'),
+        ('system', '0004_remove_system_upgrades'),
     ]
 
     operations = [
@@ -20,7 +19,6 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=250)),
                 ('orbit', models.IntegerField()),
                 ('population', models.IntegerField(default=0)),
-                ('buildings', models.ManyToManyField(to='building.Building')),
             ],
             options={
             },
@@ -45,13 +43,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='planet',
             name='owner',
-            field=models.ForeignKey(default=None, to='race.Race', null=True),
+            field=models.ForeignKey(default=None, to='player.Player', null=True),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='planet',
             name='system',
-            field=models.ForeignKey(to='system.System'),
+            field=models.ForeignKey(related_name=b'planets', to='system.System'),
             preserve_default=True,
         ),
     ]

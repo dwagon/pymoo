@@ -1,5 +1,4 @@
 from django.db import models
-from building.models import Building
 from game.models import Game
 import random
 
@@ -28,7 +27,6 @@ class SystemCategory(models.Model):
 class System(models.Model):
     name = models.CharField(max_length=250)
     game = models.ForeignKey(Game, related_name='systems')
-    upgrades = models.ManyToManyField(Building)
     category = models.ForeignKey(SystemCategory, related_name='category')
     x = models.IntegerField()
     y = models.IntegerField()

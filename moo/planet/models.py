@@ -1,7 +1,6 @@
 from django.db import models
 from system.models import System
-from race.models import Race
-from building.models import Building
+from player.models import Player
 
 
 class PlanetCondition(models.Model):
@@ -14,8 +13,7 @@ class Planet(models.Model):
     condition = models.ForeignKey(PlanetCondition, null=True)
     system = models.ForeignKey(System, related_name='planets')
     orbit = models.IntegerField()
-    owner = models.ForeignKey(Race, null=True, default=None)
+    owner = models.ForeignKey(Player, null=True, default=None)
     population = models.IntegerField(default=0)
-    buildings = models.ManyToManyField(Building)
 
 # EOF
