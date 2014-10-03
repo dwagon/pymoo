@@ -1,6 +1,7 @@
 from django.db import models
 import random
 import math
+from race.models import Race
 
 
 class Game(models.Model):
@@ -8,6 +9,7 @@ class Game(models.Model):
     max_x = models.IntegerField(default=20)
     max_y = models.IntegerField(default=20)
     numplanets = models.IntegerField(default=10)
+    numplayers = models.IntegerField(default=5)
 
     def __unicode__(self):
         return "Game %s" % self.turn
@@ -16,6 +18,34 @@ class Game(models.Model):
         locs = self.getSystemLocations()
         for a, b in locs:
             self.makeSystem(a, b)
+        self.addRaces()
+        self.addPlayers()
+
+    def addRaces(self):
+        for i in range(10):
+            if not Race.objects.filter(name="race_%d" % i):
+                Race(name="race_%d" % i).save()
+
+    def addPlayers(self):
+        from player.models import Player
+        for i in range(self.numplayers):
+            p = Player()
+            p.game = self
+            p.race = Race.objects.get(name='race_%d' % i)
+            p.name = "Player %d" % i
+            p.save()
+        self.selectHome()
+
+    def allSystems(self):
+        from system.models import System
+        return [s for s in System.objects.filter(game=self)]
+
+    def selectHome(self):
+        from player.models import Player
+        for plr in Player.objects.filter(game=self):
+            plan = plr.selectHome()
+            plan.owner = plr
+            plan.save()
 
     def pickCategory(self):
         from system.models import SystemCategory
