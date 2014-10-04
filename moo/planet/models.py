@@ -1,7 +1,7 @@
-import random
 from django.db import models
 from system.models import System
 from player.models import Player
+from moo.utils import probmap
 
 
 class PlanetCondition(models.Model):
@@ -22,16 +22,35 @@ class Planet(models.Model):
     RICH_CHOICES = (
         ('UP', "Ultra Poor"), ('P', "Poor"), ('AV', "Average"), ('R', "Rich"), ("UR", "Ultra Rich")
     )
+    CLIMATE_CHOICES = (
+        ('TX', "Toxic"), ('R', "Radiated"), ('B', "Barren"), ('D', "Desert"),
+        ("TU", "Tundra"), ("O", "Ocean"), ("S", "Swamp"), ("A", "Arid"),
+        ("TE", "Terran"), ("G", "Gaia")
+    )
     name = models.CharField(max_length=250)
     categ = models.CharField(max_length=2, choices=CATEG_CHOICES, default='')
     size = models.CharField(max_length=2, choices=SIZE_CHOICES, default='M')
     gravity = models.CharField(max_length=2, choices=GRAV_CHOICES, default='N')
     richness = models.CharField(max_length=2, choices=RICH_CHOICES, default='AV')
+    climate = models.CharField(max_length=2, choices=CLIMATE_CHOICES, default='T')
     condition = models.ForeignKey(PlanetCondition, null=True)
     system = models.ForeignKey(System, related_name='planets')
     orbit = models.IntegerField()
     owner = models.ForeignKey(Player, null=True, default=None)
     population = models.IntegerField(default=0)
+
+    def setClimate(self):
+        climmap = {
+            'blue': {'TX': 16, 'R': 50, 'B': 27, 'D': 7, 'TU': 0, 'O': 0, 'S': 0, 'A': 0, 'TE': 0, 'G': 0},
+            'white': {'TX': 16, 'R': 37, 'B': 27, 'D': 6, 'TU': 4, 'O': 2, 'S': 1, 'A': 3, 'TE': 3, 'G': 1},
+            'yellow': {'TX': 12, 'R': 27, 'B': 30, 'D': 6, 'TU': 8, 'O': 5, 'S': 4, 'A': 3, 'TE': 4, 'G': 1},
+            'orange': {'TX': 16, 'R': 17, 'B': 23, 'D': 8, 'TU': 7, 'O': 6, 'S': 7, 'A': 6, 'TE': 7, 'G': 1},
+            'red': {'TX': 16, 'R': 13, 'B': 50, 'D': 3, 'TU': 7, 'O': 2, 'S': 2, 'A': 2, 'TE': 4, 'G': 1},
+            'brown': {'TX': 20, 'R': 30, 'B': 10, 'D': 20, 'TU': 10, 'O': 2, 'S': 2, 'A': 2, 'TE': 3, 'G': 1},
+        }
+        climate = probmap(climmap[self.system.category.name])
+        self.climate = climate
+        self.save()
 
     def setGravity(self):
         gravmap = {
@@ -53,35 +72,12 @@ class Planet(models.Model):
             'orange': {'UP': 10, 'P': 40, 'AV': 40, 'R': 10, 'UR': 0},
             'red': {'UP': 20, 'P': 40, 'AV': 40, 'R': 0, 'UR': 0},
         }
-        cat = self.system.category.name
-        r = random.randrange(100)
-        prob = richprob[cat]
-        if r < prob['UP']:
-            self.richness = 'UP'
-        elif prob['UP'] < r < prob['P']:
-            self.richness = 'P'
-        elif prob['P'] < r < prob['AV']:
-            self.richness = 'AV'
-        elif prob['AV'] < r < prob['R']:
-            self.richness = 'R'
-        else:
-            self.richness = 'UR'
+        self.richness = probmap(richprob[self.system.category.name])
         self.save()
 
     def setSize(self):
-        r = random.randrange(100)
-        if r < 10:
-            size = 'T'
-        elif 10 < r < 30:
-            size = 'S'
-        elif 30 < r < 70:
-            size = 'M'
-        elif 70 < r < 90:
-            size = 'L'
-        else:
-            size = 'H'
-        self.size = size
+        sizemap = {'T': 10, 'S': 20, 'M': 40, 'L': 20, 'H': 10}
+        self.size = probmap(sizemap)
         self.save()
-
 
 # EOF

@@ -70,5 +70,6 @@ class System(models.Model):
         p.setSize()
         p.setRichness()
         p.setGravity()
+        p.setClimate()
 
 # EOF
