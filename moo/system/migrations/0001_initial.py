@@ -8,7 +8,6 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('game', '0001_initial'),
-        ('building', '0001_initial'),
     ]
 
     operations = [
@@ -61,12 +60,6 @@ class Migration(migrations.Migration):
             model_name='system',
             name='game',
             field=models.ForeignKey(related_name=b'systems', to='game.Game'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='system',
-            name='upgrades',
-            field=models.ManyToManyField(to='building.Building'),
             preserve_default=True,
         ),
     ]

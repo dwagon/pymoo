@@ -7,14 +7,15 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0001_initial'),
+        ('planet', '0001_initial'),
+        ('player', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='game',
-            name='numplayers',
-            field=models.IntegerField(default=5),
+            model_name='planet',
+            name='owner',
+            field=models.ForeignKey(default=None, to='player.Player', null=True),
             preserve_default=True,
         ),
     ]

@@ -7,8 +7,6 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('player', '0001_initial'),
-        ('system', '0004_remove_system_upgrades'),
     ]
 
     operations = [
@@ -38,18 +36,6 @@ class Migration(migrations.Migration):
             model_name='planet',
             name='condition',
             field=models.ForeignKey(to='planet.PlanetCondition', null=True),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='planet',
-            name='owner',
-            field=models.ForeignKey(default=None, to='player.Player', null=True),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='planet',
-            name='system',
-            field=models.ForeignKey(related_name=b'planets', to='system.System'),
             preserve_default=True,
         ),
     ]

@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RemoveField(
-            model_name='system',
-            name='upgrades',
+            model_name='systemname',
+            name='used',
         ),
     ]
