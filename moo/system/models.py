@@ -67,5 +67,6 @@ class System(models.Model):
         else:
             p.categ = 'P'
         p.save()
+        p.setSize()
 
 # EOF
