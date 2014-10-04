@@ -3,12 +3,11 @@ from game.models import Game
 import random
 
 MAX_ORBITS = 6
-ORBIT_NAMES = ('I', 'II', 'III', 'IV', 'V', 'VI')
+ORBIT_NAMES = ('I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII')
 
 
 class SystemName(models.Model):
     name = models.CharField(max_length=250)
-    used = models.BooleanField(default=False)
 
 
 class SystemCategory(models.Model):
@@ -30,6 +29,7 @@ class System(models.Model):
     category = models.ForeignKey(SystemCategory, related_name='category')
     x = models.IntegerField()
     y = models.IntegerField()
+    _names = []
 
     def orbits(self):
         """ Return the planets in this system based on their orbits """
@@ -41,14 +41,12 @@ class System(models.Model):
         return ans
 
     def assignName(self, name=""):
-        if name:
-            self.name = name
-        else:
-            sns = [sn for sn in SystemName.objects.filter(used=False)]
-            use = random.choice(sns)
-            use.used = True
-            use.save()
-            self.name = use.name
+        if not name:
+            if not self._names:
+                self._names = [sn.name for sn in SystemName.objects.all()]
+            name = random.choice(self._names)
+            self._names.remove(name)
+        self.name = name
         self.save()
 
     def makeOrbits(self):
