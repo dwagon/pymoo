@@ -1,3 +1,4 @@
+import random
 from django.db import models
 from system.models import System
 from player.models import Player
@@ -32,8 +33,31 @@ class Planet(models.Model):
     owner = models.ForeignKey(Player, null=True, default=None)
     population = models.IntegerField(default=0)
 
+    def setRichness(self):
+        richprob = {
+            'blue': {'UP': 0, 'P': 0, 'AV': 40, 'R': 20, 'UR': 20},
+            'white': {'UP': 0, 'P': 20, 'AV': 40, 'R': 30, 'UR': 10},
+            'yellow': {'UP': 0, 'P': 30, 'AV': 40, 'R': 20, 'UR': 10},
+            'brown': {'UP': 5, 'P': 10, 'AV': 60, 'R': 20, 'UR': 5},
+            'orange': {'UP': 10, 'P': 40, 'AV': 40, 'R': 10, 'UR': 0},
+            'red': {'UP': 20, 'P': 40, 'AV': 40, 'R': 0, 'UR': 0},
+        }
+        cat = self.system.category.name
+        r = random.randrange(100)
+        prob = richprob[cat]
+        if r < prob['UP']:
+            self.richness = 'UP'
+        elif prob['UP'] < r < prob['P']:
+            self.richness = 'P'
+        elif prob['P'] < r < prob['AV']:
+            self.richness = 'AV'
+        elif prob['AV'] < r < prob['R']:
+            self.richness = 'R'
+        else:
+            self.richness = 'UR'
+        self.save()
+
     def setSize(self):
-        import random
         r = random.randrange(100)
         if r < 10:
             size = 'T'

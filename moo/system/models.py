@@ -68,5 +68,6 @@ class System(models.Model):
             p.categ = 'P'
         p.save()
         p.setSize()
+        p.setRichness()
 
 # EOF
