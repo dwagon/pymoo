@@ -69,5 +69,6 @@ class System(models.Model):
         p.save()
         p.setSize()
         p.setRichness()
+        p.setGravity()
 
 # EOF

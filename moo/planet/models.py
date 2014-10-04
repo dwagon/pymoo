@@ -33,6 +33,17 @@ class Planet(models.Model):
     owner = models.ForeignKey(Player, null=True, default=None)
     population = models.IntegerField(default=0)
 
+    def setGravity(self):
+        gravmap = {
+            'T': {'UP': 'L', 'P': 'L', 'AV': 'L', 'R': 'N', 'UR': 'N'},
+            'S': {'UP': 'L', 'P': 'L', 'AV': 'N', 'R': 'N', 'UR': 'N'},
+            'M': {'UP': 'L', 'P': 'N', 'AV': 'N', 'R': 'N', 'UR': 'H'},
+            'L': {'UP': 'N', 'P': 'N', 'AV': 'N', 'R': 'H', 'UR': 'H'},
+            'H': {'UP': 'N', 'P': 'N', 'AV': 'H', 'R': 'H', 'UR': 'H'},
+        }
+        self.gravity = gravmap[self.size][self.richness]
+        self.save()
+
     def setRichness(self):
         richprob = {
             'blue': {'UP': 0, 'P': 0, 'AV': 40, 'R': 20, 'UR': 20},
