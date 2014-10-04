@@ -2,7 +2,7 @@
 <body>
 <ul>
 <li> Name: {{system.name}}
-<li> Game: <a href="{% url 'gameDetails' system.game.id %}">Game</a>
+<li> Game: <a href="{% url 'gameDetails' system.game.id %}">{{system.game.name}}</a>
 <li> Category: {{system.category}}
 <li> Location: {{system.x}}, {{system.y}}
 <li> Planets:
