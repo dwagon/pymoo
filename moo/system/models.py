@@ -59,16 +59,13 @@ class System(models.Model):
         p.name = "%s %s" % (self.name, ORBIT_NAMES[orbit])
         p.system = self
         p.orbit = orbit
-        if x < self.category.prob_asteroid:
-            # Asteroid
-            p.save()
-            return
-        x -= self.category.prob_asteroid
-        if x < self.category.prob_gasgiant:
-            # Gas Giant
-            p.save()
-            return
-        # Planet
+        odds = random.randrange(100)
+        if odds < 20:
+            p.categ = 'AB'
+        elif 20 < odds < 40:
+            p.categ = 'GG'
+        else:
+            p.categ = 'P'
         p.save()
 
 # EOF
