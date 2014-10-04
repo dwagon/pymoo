@@ -13,10 +13,7 @@ class SystemName(models.Model):
 class SystemCategory(models.Model):
     name = models.CharField(max_length=250)
     blockwarp = models.BooleanField(default=False)
-    prob_nothing = models.IntegerField(default=0)
-    prob_asteroid = models.IntegerField(default=0)
-    prob_gasgiant = models.IntegerField(default=0)
-    prob_planet = models.IntegerField(default=0)
+    prob_orbit = models.IntegerField(default=0)
     prob_existing = models.IntegerField(default=0)
 
     def __unicode__(self):
@@ -56,13 +53,8 @@ class System(models.Model):
     def makeOrbit(self, orbit):
         from planet.models import Planet
         cat = self.category
-        totprob = cat.prob_nothing + cat.prob_asteroid + cat.prob_gasgiant + cat.prob_planet
-        if not totprob:
+        if random.randrange(100) > cat.prob_orbit:
             return
-        x = random.randrange(totprob)
-        if x < self.category.prob_nothing:
-            return
-        x -= self.category.prob_nothing
         p = Planet()
         p.name = "%s %s" % (self.name, ORBIT_NAMES[orbit])
         p.system = self
