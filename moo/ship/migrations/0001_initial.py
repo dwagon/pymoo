@@ -7,6 +7,9 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('race', '0001_initial'),
+        ('system', '0001_initial'),
+        ('upgrade', '0001_initial'),
     ]
 
     operations = [
@@ -17,6 +20,9 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=250)),
                 ('x', models.IntegerField()),
                 ('y', models.IntegerField()),
+                ('orbit', models.ForeignKey(to='system.System', null=True)),
+                ('owner', models.ForeignKey(to='race.Race')),
+                ('upgrades', models.ManyToManyField(to='upgrade.Upgrade')),
             ],
             options={
             },
