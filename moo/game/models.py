@@ -4,15 +4,21 @@ import math
 from race.models import Race
 
 
-class Game(models.Model):
-    turn = models.IntegerField(default=0)
+class GameSize(models.Model):
+    name = models.CharField(max_length=50)
+    numsystems = models.IntegerField(default=10)
     max_x = models.IntegerField(default=20)
     max_y = models.IntegerField(default=20)
-    numplanets = models.IntegerField(default=10)
+
+
+class Game(models.Model):
+    size = models.ForeignKey(GameSize)
+    turn = models.IntegerField(default=0)
+    name = models.CharField(max_length=50)
     numplayers = models.IntegerField(default=5)
 
     def __unicode__(self):
-        return "Game %s" % self.turn
+        return "Game %s" % self.name
 
     def makeGalaxy(self):
         locs = self.getSystemLocations()
@@ -72,7 +78,7 @@ class Game(models.Model):
 
     def getSystemLocations(self):
         locs = []
-        while len(locs) < self.numplanets:
+        while len(locs) < self.size.numsystems:
             x, y = self.randpos()
             dists = []
             for a, b in locs:
@@ -86,8 +92,8 @@ class Game(models.Model):
         return d
 
     def randpos(self):
-        x = random.randrange(self.max_x)
-        y = random.randrange(self.max_y)
+        x = random.randrange(self.size.max_x)
+        y = random.randrange(self.size.max_y)
         return x, y
 
 # EOF

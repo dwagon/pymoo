@@ -15,12 +15,30 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('turn', models.IntegerField(default=0)),
-                ('max_x', models.IntegerField(default=20)),
-                ('max_y', models.IntegerField(default=20)),
-                ('numplanets', models.IntegerField(default=10)),
+                ('name', models.CharField(max_length=50)),
+                ('numplayers', models.IntegerField(default=5)),
             ],
             options={
             },
             bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='GameSize',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=50)),
+                ('numsystems', models.IntegerField(default=10)),
+                ('max_x', models.IntegerField(default=20)),
+                ('max_y', models.IntegerField(default=20)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='game',
+            name='size',
+            field=models.ForeignKey(to='game.GameSize'),
+            preserve_default=True,
         ),
     ]
