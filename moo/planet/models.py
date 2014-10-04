@@ -20,7 +20,7 @@ class Planet(models.Model):
         ('L', "Low"), ('N', "Normal"), ('H', "High")
     )
     RICH_CHOICES = (
-        ('UP', "Ultra Poor"), ('P', "Poor"), ('AV', "Average"), ('R', "Rich"), ("UR", "Ultra Rich")
+        ('UP', "Ultra Poor"), ('P', "Poor"), ('A', "Abundant"), ('R', "Rich"), ("UR", "Ultra Rich")
     )
     CLIMATE_CHOICES = (
         ('TX', "Toxic"), ('R', "Radiated"), ('B', "Barren"), ('D', "Desert"),
@@ -31,7 +31,7 @@ class Planet(models.Model):
     categ = models.CharField(max_length=2, choices=CATEG_CHOICES, default='')
     size = models.CharField(max_length=2, choices=SIZE_CHOICES, default='M')
     gravity = models.CharField(max_length=2, choices=GRAV_CHOICES, default='N')
-    richness = models.CharField(max_length=2, choices=RICH_CHOICES, default='AV')
+    richness = models.CharField(max_length=2, choices=RICH_CHOICES, default='A')
     climate = models.CharField(max_length=2, choices=CLIMATE_CHOICES, default='T')
     condition = models.ForeignKey(PlanetCondition, null=True)
     system = models.ForeignKey(System, related_name='planets')
@@ -54,23 +54,23 @@ class Planet(models.Model):
 
     def setGravity(self):
         gravmap = {
-            'T': {'UP': 'L', 'P': 'L', 'AV': 'L', 'R': 'N', 'UR': 'N'},
-            'S': {'UP': 'L', 'P': 'L', 'AV': 'N', 'R': 'N', 'UR': 'N'},
-            'M': {'UP': 'L', 'P': 'N', 'AV': 'N', 'R': 'N', 'UR': 'H'},
-            'L': {'UP': 'N', 'P': 'N', 'AV': 'N', 'R': 'H', 'UR': 'H'},
-            'H': {'UP': 'N', 'P': 'N', 'AV': 'H', 'R': 'H', 'UR': 'H'},
+            'T': {'UP': 'L', 'P': 'L', 'A': 'L', 'R': 'N', 'UR': 'N'},
+            'S': {'UP': 'L', 'P': 'L', 'A': 'N', 'R': 'N', 'UR': 'N'},
+            'M': {'UP': 'L', 'P': 'N', 'A': 'N', 'R': 'N', 'UR': 'H'},
+            'L': {'UP': 'N', 'P': 'N', 'A': 'N', 'R': 'H', 'UR': 'H'},
+            'H': {'UP': 'N', 'P': 'N', 'A': 'H', 'R': 'H', 'UR': 'H'},
         }
         self.gravity = gravmap[self.size][self.richness]
         self.save()
 
     def setRichness(self):
         richprob = {
-            'blue': {'UP': 0, 'P': 0, 'AV': 40, 'R': 20, 'UR': 20},
-            'white': {'UP': 0, 'P': 20, 'AV': 40, 'R': 30, 'UR': 10},
-            'yellow': {'UP': 0, 'P': 30, 'AV': 40, 'R': 20, 'UR': 10},
-            'brown': {'UP': 5, 'P': 10, 'AV': 60, 'R': 20, 'UR': 5},
-            'orange': {'UP': 10, 'P': 40, 'AV': 40, 'R': 10, 'UR': 0},
-            'red': {'UP': 20, 'P': 40, 'AV': 40, 'R': 0, 'UR': 0},
+            'blue': {'UP': 0, 'P': 0, 'A': 40, 'R': 20, 'UR': 20},
+            'white': {'UP': 0, 'P': 20, 'A': 40, 'R': 30, 'UR': 10},
+            'yellow': {'UP': 0, 'P': 30, 'A': 40, 'R': 20, 'UR': 10},
+            'brown': {'UP': 5, 'P': 10, 'A': 60, 'R': 20, 'UR': 5},
+            'orange': {'UP': 10, 'P': 40, 'A': 40, 'R': 10, 'UR': 0},
+            'red': {'UP': 20, 'P': 40, 'A': 40, 'R': 0, 'UR': 0},
         }
         self.richness = probmap(richprob[self.system.category.name])
         self.save()
