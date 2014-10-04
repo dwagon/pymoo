@@ -47,7 +47,6 @@ INSTALLED_APPS = (
     'rest_framework',
     'building',
     'game',
-    'upgrade',
     'planet',
     'race',
     'ship',
