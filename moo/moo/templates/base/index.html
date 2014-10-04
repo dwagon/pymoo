@@ -1,9 +1,18 @@
 <html>
-<a href="{% url 'makeGalaxy' %}">Make Galaxy</a>
+<body>
+<h2>New Game</h2>
 <ul>
-{% for game in games %}
-<li> <a href="{% url 'gameDetails' game.id %}">{{game}}</a>
-{% endfor %}
+    {% for gs in sizes %}
+        <li> <a href="{% url 'gameNew' gs.name %}">New {{gs.name}} Game</a>
+    {% endfor %}
 </ul>
 <hr>
+<h2>Existing Games</h2>
+<ul>
+    {% for game in games %}
+        <li> <a href="{% url 'gameDetails' game.id %}">{{game}}</a> &nbsp; <a href="{% url 'gameDelete' game.id %}">Delete</a>
+    {% endfor %}
+</ul>
+<hr>
+</body>
 </html>
