@@ -18,10 +18,14 @@ class Planet(models.Model):
     GRAV_CHOICES = (
         ('L', "Low"), ('N', "Normal"), ('H', "High")
     )
+    RICH_CHOICES = (
+        ('UP', "Ultra Poor"), ('P', "Poor"), ('AV', "Average"), ('R', "Rich"), ("UR", "Ultra Rich")
+    )
     name = models.CharField(max_length=250)
     categ = models.CharField(max_length=2, choices=CATEG_CHOICES, default='')
     size = models.CharField(max_length=2, choices=SIZE_CHOICES, default='M')
     gravity = models.CharField(max_length=2, choices=GRAV_CHOICES, default='N')
+    richness = models.CharField(max_length=2, choices=RICH_CHOICES, default='AV')
     condition = models.ForeignKey(PlanetCondition, null=True)
     system = models.ForeignKey(System, related_name='planets')
     orbit = models.IntegerField()
