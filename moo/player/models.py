@@ -22,6 +22,9 @@ class Player(models.Model):
         found = False
         while not found:
             syst = random.choice(allsys)
+            ap = Planet.objects.filter(system=syst)
+            if not ap:
+                continue
             p = Planet.objects.filter(system=syst).filter(owner__isnull=False)
             if not p:
                 found = True
