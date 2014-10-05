@@ -28,6 +28,10 @@ class System(models.Model):
     y = models.IntegerField()
     _names = []
 
+    def ships_in_system(self):
+        from ship.models import Ship
+        return Ship.objects.filter(system=self)
+
     def orbits(self):
         """ Return the planets in this system based on their orbits """
         from planet.models import Planet
