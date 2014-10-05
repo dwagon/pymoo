@@ -51,7 +51,7 @@ class ShipDesign(models.Model):
 class Ship(models.Model):
     name = models.CharField(max_length=250)
     owner = models.ForeignKey(Player)
-    orbit = models.ForeignKey(System, null=True)
+    system = models.ForeignKey(System, null=True)
     x = models.IntegerField()
     y = models.IntegerField()
     design = models.ForeignKey(ShipDesign)
