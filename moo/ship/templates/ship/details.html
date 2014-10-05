@@ -1,0 +1,18 @@
+<html>
+<body>
+<ul>
+<li> Name: {{ship.name}}
+<li> Owner: <a href="{% url 'playerDetails' ship.owner.id %}">{{ship.owner.name}}</a>
+<li> System: <a href="{% url 'systemDetails' ship.system.id %}">{{ship.system.name}}</a>
+<li> Design: 
+    <ul>
+    <li> Hull: {{ship.design.hull.name}}
+    <li> Drive: {{ship.design.drive.name}}
+    <li> Fuel: {{ship.design.fuel.name}}
+    <li> Shield: {{ship.design.shield.name}}
+    <li> Computer: {{ship.design.computer.name}}
+    <li> Armour: {{ship.design.armour.name}}
+    </ul>
+</ul>
+</body>
+</html>

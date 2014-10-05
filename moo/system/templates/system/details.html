@@ -11,6 +11,12 @@
         <li> <a href="{% url 'planetDetails' planet.id %}">{{planet.name}}</a> ({{planet.get_categ_display}})
     {% endfor %}
     </ul>
+<li> Ships:
+    <ul>
+    {% for ship in system.ships_in_system %}
+        <li> <a href="{% url 'shipDetails' ship.id %}">{{ship.name}} - {{ship.design.name}}</a>
+    {% endfor %}
+    </ul>
 </ul>
 </body>
 </html>
