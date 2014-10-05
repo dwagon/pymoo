@@ -38,6 +38,7 @@ class ShipFuel(models.Model):
 
 
 class ShipDesign(models.Model):
+    name = models.CharField(max_length=250)
     hull = models.ForeignKey(ShipHull)
     drive = models.ForeignKey(ShipDrive)
     fuel = models.ForeignKey(ShipFuel)
