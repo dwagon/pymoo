@@ -52,6 +52,7 @@ class Game(models.Model):
             plan = plr.selectHome()
             plan.owner = plr
             plan.save()
+            plr.addInitialShips(plan)
 
     def pickCategory(self):
         from system.models import SystemCategory
