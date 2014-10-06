@@ -18,4 +18,5 @@ urlpatterns = patterns(
     url(r'^api/v1/game/', include('game.apiurls')),
     url(r'^api/v1/planet/', include('planet.apiurls')),
     url(r'^api/v1/system/', include('system.apiurls')),
+    url(r'^api/v1/ship/', include('ship.apiurls')),
 )
