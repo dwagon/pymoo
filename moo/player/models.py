@@ -41,10 +41,10 @@ class Player(models.Model):
         sysplans = [pln for pln in Planet.objects.filter(system=syst)]
         homeplan = random.choice(sysplans)
         homeplan.gravity = 'N'
-        homeplan.size = 'M'
+        homeplan.size = 'L'
         homeplan.climate = 'TE'
         homeplan.richness = 'A'
-        homeplan.population = 8
+        homeplan.population = 8000000
         homeplan.save()
         return homeplan
 

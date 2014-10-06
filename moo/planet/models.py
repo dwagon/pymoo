@@ -2,6 +2,7 @@ from django.db import models
 from system.models import System
 from player.models import Player
 from moo.utils import probmap
+import math
 
 
 class PlanetCondition(models.Model):
@@ -81,6 +82,19 @@ class Planet(models.Model):
         self.save()
 
     def turn(self):
-        pass
+        self.population += self.pop_growth()
+        self.save()
+
+    def maxpop(self):
+        sizemap = {'T': 1, 'S': 2, 'M': 3, 'L': 4, 'H': 5}
+        climmult = {'TX': 0.25, 'R': 0.25, 'B': 0.25, 'D': 0.25, 'TU': 0.25, 'O': 0.25, 'S': 0.40, 'A': 0.60, 'TE': 0.80, 'G': 1.0}
+        maxp = 5000000.0 * sizemap[self.size] * climmult[self.climate]
+        return int(maxp)
+
+    def pop_growth(self):
+        popmax = self.maxpop()
+        pop = self.population
+        b = int(math.sqrt(2000.0 * pop * (popmax - pop) / popmax))
+        return b
 
 # EOF
