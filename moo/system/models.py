@@ -28,6 +28,11 @@ class System(models.Model):
     y = models.IntegerField()
     _names = []
 
+    def turn(self):
+        from planet.models import Planet
+        for p in Planet.objects.filter(system=self):
+            p.turn()
+
     def ships_in_system(self):
         from ship.models import Ship
         return Ship.objects.filter(system=self)

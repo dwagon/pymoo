@@ -1,7 +1,7 @@
 <html>
 <body>
 <ul>
-<li> Turn: {{game.turn}}
+<li> Turn: {{game.turn}} <a href="{% url 'nextTurn' game.id %}">Next Turn</a>
 <li> Num Systems: {{game.numplanets}}
 <li> Players:
     <ul>

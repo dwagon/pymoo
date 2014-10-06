@@ -10,9 +10,17 @@ class Player(models.Model):
     race = models.ForeignKey(Race)
     credits = models.IntegerField(default=0)
 
+    def turn(self):
+        for ship in self.owned_ships():
+            ship.turn()
+
     def owned_planets(self):
         from planet.models import Planet
         return Planet.objects.filter(owner=self)
+
+    def owned_ships(self):
+        from ship.models import Ship
+        return Ship.objects.filter(owner=self)
 
     def selectHome(self):
         from planet.models import Planet

@@ -80,4 +80,7 @@ class Planet(models.Model):
         self.size = probmap(sizemap)
         self.save()
 
+    def turn(self):
+        pass
+
 # EOF

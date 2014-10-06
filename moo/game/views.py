@@ -28,4 +28,10 @@ def details(request, game_id):
     d['players'] = Player.objects.filter(game=d['game'])
     return render(request, 'game/details.html', d)
 
+
+def nextTurn(request, game_id):
+    game = get_object_or_404(Game, pk=game_id)
+    game.processTurn()
+    return redirect('gameDetails', game_id=game_id)
+
 # EOF

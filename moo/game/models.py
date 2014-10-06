@@ -20,6 +20,16 @@ class Game(models.Model):
     def __unicode__(self):
         return "Game %s" % self.name
 
+    def processTurn(self):
+        from system.models import System
+        from player.models import Player
+        for plr in Player.objects.filter(game=self):
+            plr.turn()
+        for systm in System.objects.filter(game=self):
+            systm.turn()
+        self.turn += 1
+        self.save()
+
     def makeGalaxy(self):
         locs = self.getSystemLocations()
         for a, b in locs:
