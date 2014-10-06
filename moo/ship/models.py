@@ -56,5 +56,6 @@ class Ship(models.Model):
     x = models.IntegerField()
     y = models.IntegerField()
     design = models.ForeignKey(ShipDesign)
+    destsystem = models.ForeignKey(System, null=True, related_name='destination')
 
 # EOF
