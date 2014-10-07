@@ -8,7 +8,7 @@ def initial_data(apps, schema_editor):
     TC = apps.get_model('tech', 'TechCategory')
     T = apps.get_model('tech', 'Tech')
 
-    tc = TC(name='Astro Biology (80 RP)', cost=80, category='BL')
+    tc = TC(name='Astro Biology', cost=80, category='BL')
     tc.save()
     T(name='Hydroponic Farm', categ=tc, desc="""An automated, sealed environment in which food can be grown, even on lifeless worlds. It increases the food output of a world by +2 food.""").save()
     T(name='Biospheres', categ=tc, desc="""Enables a colony to better control environmental conditions, allowing colonization of the more intolerable areas of the planet. Maximum planetary population is increased by +2 million.""").save()
