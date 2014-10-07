@@ -1,6 +1,7 @@
 from django.db import models
 from system.models import System
 from player.models import Player
+import math
 
 
 class ShipArmour(models.Model):
@@ -59,9 +60,28 @@ class Ship(models.Model):
     destsystem = models.ForeignKey(System, null=True, related_name='destination')
 
     def turn(self):
-        pass
+        if self.destsystem:
+            if not self.x:
+                self.x = self.system.x
+            if not self.y:
+                self.y = self.system.y
+            x2 = self.destsystem.x
+            y2 = self.destsystem.y
+            speed = self.design.drive.speed
+            # Have we arrived?
+            if math.sqrt((x2 - self.x)**2 + (y2 - self.y)**2) <= speed:
+                self.system = self.destsystem
+                self.destsystem = None
+            else:
+                self.system = None
+                ang = math.atan2(y2 - self.y, x2 - self.x)
+                self.x = self.x + speed * math.cos(ang)
+                self.y = self.y + speed * math.sin(ang)
+            self.save()
 
     def inRange(self):
+        if not self.system:
+            return []
         r = self.design.fuel.parsecs
         allsys = System.objects.filter(game=self.system.game)
         ans = [s for s in allsys if self.system.range(s) <= r]
