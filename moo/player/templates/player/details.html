@@ -4,6 +4,8 @@
 <li> Name: {{player.name}}
 <li> Game: <a href="{% url 'gameDetails' player.game.id %}">Game</a>
 <li> Race: {{player.race}}
+<li> Research: {{player.research}}
+<li> Researching: {{player.researching}}
 <li> Credits: {{player.credits}}
 <li> Planets:
     <ul>
@@ -20,6 +22,23 @@
     {% for ship in player.owned_ships %}
         <li> <a href="{% url 'shipDetails' ship.id %}">{{ship.name}} - {{ship.design.name}}</a>
     {% endfor %}
+    </ul>
+<li> Known Technologies:
+    <ul>
+        {% for tech in player.know %}
+            <li> {{tech.name}}
+        {% endfor %}
+    </ul>
+<li> Available for Research:
+    <ul>
+        {% for techcat, techs in player.availableResearch.items %}
+            <li> {{techcat.get_category_display}}: {{techcat.name}}
+                <ul>
+                    {% for t in techs %}
+                        <li> {{t.name}}
+                    {% endfor %}
+                </ul>
+        {% endfor %}
     </ul>
 </ul>
 </body>

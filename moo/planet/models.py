@@ -86,6 +86,10 @@ class Planet(models.Model):
 
     def turn(self):
         self.population += self.pop_growth()
+        if self.owner:
+            self.owner.research += 3 * self.scientists
+            self.owner.save()
+
         self.save()
 
     def maxpop(self):

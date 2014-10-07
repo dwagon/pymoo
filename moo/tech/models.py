@@ -13,12 +13,18 @@ class TechCategory(models.Model):
     cost = models.IntegerField()
     category = models.CharField(max_length=2, choices=CATEG_CHOICES)
 
+    def __str__(self):
+        return "TechCategory %s" % self.name
+
 
 class Tech(models.Model):
     name = models.CharField(max_length=250)
     categ = models.ForeignKey(TechCategory)
     desc = models.CharField(max_length=1024, default='')
     researchable = models.BooleanField(default=True)
+
+    def __str__(self):
+        return "Tech %s" % self.name
 
 
 # EOF

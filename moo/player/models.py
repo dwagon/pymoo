@@ -1,6 +1,7 @@
 from django.db import models
 from game.models import Game
 from race.models import Race
+from tech.models import Tech, TechCategory
 import random
 
 
@@ -9,6 +10,10 @@ class Player(models.Model):
     game = models.ForeignKey(Game)
     race = models.ForeignKey(Race)
     credits = models.IntegerField(default=0)
+    research = models.IntegerField(default=0)
+    researching = models.ForeignKey(Tech, null=True, default=None, related_name='researching')
+    researched = models.ManyToManyField(TechCategory, null=True, default=None, related_name='researched')
+    know = models.ForeignKey(Tech, null=True, default=None, related_name='know')
 
     def turn(self):
         for ship in self.owned_ships():
@@ -50,6 +55,21 @@ class Player(models.Model):
         homeplan.scientists = 1
         homeplan.save()
         return homeplan
+
+    def availableResearch(self):
+        """ Return a dict with key = category, value = [tech, tech, ...]
+            that are available to the player to research """
+        available = {}
+        categories = set([t.category for t in TechCategory.objects.all()])
+        for c in categories:
+            for tc in TechCategory.objects.filter(category=c).order_by('cost'):
+                if tc in self.researched.all():
+                    continue
+                available[tc] = [t for t in Tech.objects.filter(categ=tc, researchable=True)]
+                break
+        import sys
+        sys.stderr.write("available=%s\n" % available)
+        return available
 
     def addInitialShips(self, homeplanet):
         from ship.models import ShipDesign, Ship
