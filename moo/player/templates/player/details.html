@@ -15,6 +15,12 @@
          <li> None
     {% endif %}
     </ul>
+<li> Ships:
+    <ul>
+    {% for ship in player.owned_ships %}
+        <li> <a href="{% url 'shipDetails' ship.id %}">{{ship.name}} - {{ship.design.name}}</a>
+    {% endfor %}
+    </ul>
 </ul>
 </body>
 </html>
