@@ -14,9 +14,11 @@ urlpatterns = patterns(
     url(r'^player/', include('player.urls')),
     url(r'^ship/', include('ship.urls')),
     url(r'^system/', include('system.urls')),
+    url(r'^tech/', include('tech.urls')),
 
     url(r'^api/v1/game/', include('game.apiurls')),
     url(r'^api/v1/planet/', include('planet.apiurls')),
-    url(r'^api/v1/system/', include('system.apiurls')),
     url(r'^api/v1/ship/', include('ship.apiurls')),
+    url(r'^api/v1/system/', include('system.apiurls')),
+    url(r'^api/v1/tech/', include('tech.apiurls')),
 )

@@ -67,8 +67,6 @@ class Player(models.Model):
                     continue
                 available[tc] = [t for t in Tech.objects.filter(categ=tc, researchable=True)]
                 break
-        import sys
-        sys.stderr.write("available=%s\n" % available)
         return available
 
     def addInitialShips(self, homeplanet):

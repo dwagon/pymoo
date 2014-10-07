@@ -35,7 +35,7 @@
             <li> {{techcat.get_category_display}}: {{techcat.name}}
                 <ul>
                     {% for t in techs %}
-                        <li> {{t.name}}
+                        <li> <a href="{% url 'techDetails' t.id %}">{{t.name}}</a>
                     {% endfor %}
                 </ul>
         {% endfor %}
