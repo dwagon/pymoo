@@ -2,10 +2,15 @@
 <body>
 <ul>
 <li> Name: {{player.name}}
-<li> Game: <a href="{% url 'gameDetails' player.game.id %}">Game</a>
+<li> Game: <a href="{% url 'gameDetails' player.game.id %}">{{player.game.name}}</a>
 <li> Race: {{player.race}}
-<li> Research: {{player.research}}
-<li> Researching: {{player.researching}}
+<li> Research: {{player.research}} ({{player.research_points_per_turn}} RP/turn)
+<li> Researching: 
+{% if player.researching %}
+<a href="{% url 'techDetails' player.researching.id %}">{{player.researching}}</a> ({{player.research_turns_to_go}} turns left)
+{% else %}
+None
+{% endif %}
 <li> Credits: {{player.credits}}
 <li> Planets:
     <ul>
@@ -25,17 +30,17 @@
     </ul>
 <li> Known Technologies:
     <ul>
-        {% for tech in player.know %}
-            <li> {{tech.name}}
+        {% for tech in player.know.all %}
+            <li> <a href="{% url 'techDetails' tech.id %}">{{tech.name}}</a>
         {% endfor %}
     </ul>
 <li> Available for Research:
     <ul>
         {% for techcat, techs in player.availableResearch.items %}
-            <li> {{techcat.get_category_display}}: {{techcat.name}}
+            <li> {{techcat.get_category_display}}: {{techcat.name}} ({{techcat.cost}} RP)
                 <ul>
                     {% for t in techs %}
-                        <li> <a href="{% url 'techDetails' t.id %}">{{t.name}}</a>
+                        <li> <a href="{% url 'techDetails' t.id %}">{{t.name}}</a> (<a href="{% url 'setResearch' player.id t.id %}">Research</a>)
                     {% endfor %}
                 </ul>
         {% endfor %}

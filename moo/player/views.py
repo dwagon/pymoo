@@ -13,8 +13,7 @@ def setResearch(request, player_id, tech_id):
     d = {}
     d['player'] = get_object_or_404(Player, pk=player_id)
     d['tech'] = get_object_or_404(Tech, pk=tech_id)
-    d['player'].researching = d['tech']
-    d['player'].save()
+    d['player'].setResearch(d['tech'])
     return render(request, 'player/details.html', d)
 
 # EOF

@@ -24,7 +24,7 @@ class Tech(models.Model):
     researchable = models.BooleanField(default=True)
 
     def __str__(self):
-        return "Tech %s" % self.name
+        return "%s" % self.name
 
 
 # EOF

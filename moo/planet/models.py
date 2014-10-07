@@ -84,10 +84,13 @@ class Planet(models.Model):
         self.size = probmap(sizemap)
         self.save()
 
+    def research_points(self):
+        return 3 * self.scientists
+
     def turn(self):
         self.population += self.pop_growth()
         if self.owner:
-            self.owner.research += 3 * self.scientists
+            self.owner.research += self.research_points()
             self.owner.save()
 
         self.save()

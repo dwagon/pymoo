@@ -13,15 +13,39 @@ class Player(models.Model):
     research = models.IntegerField(default=0)
     researching = models.ForeignKey(Tech, null=True, default=None, related_name='researching')
     researched = models.ManyToManyField(TechCategory, null=True, default=None, related_name='researched')
-    know = models.ForeignKey(Tech, null=True, default=None, related_name='know')
+    know = models.ManyToManyField(Tech, null=True, default=None, related_name='know')
 
     def turn(self):
         for ship in self.owned_ships():
             ship.turn()
+        if self.researching and self.research > self.researching.categ.cost:
+            self.research -= self.researching.categ.cost
+            self.researched.add(self.researching.categ)
+            self.know.add(self.researching)
+            self.researching = None
+            self.save()
 
     def owned_planets(self):
         from planet.models import Planet
         return Planet.objects.filter(owner=self)
+
+    def research_points_per_turn(self):
+        points = 0
+        for pl in self.owned_planets():
+            points += pl.research_points()
+        return points
+
+    def research_turns_to_go(self, tech=None):
+        points = self.research_points_per_turn()
+        if tech is None:
+            tech = self.researching
+        required = tech.categ.cost - self.research
+        return int(required/points) + 1
+
+    def setResearch(self, tech):
+        self.researching = tech
+        self.research = 0
+        self.save()
 
     def owned_ships(self):
         from ship.models import Ship

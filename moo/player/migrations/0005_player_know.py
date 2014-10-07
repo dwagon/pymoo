@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='player',
             name='know',
-            field=models.ForeignKey(related_name=b'know', default=None, to='tech.Tech', null=True),
+            field=models.ManyToManyField(related_name=b'know', default=None, to='tech.Tech', null=True),
             preserve_default=True,
         ),
     ]
