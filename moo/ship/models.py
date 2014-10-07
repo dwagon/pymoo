@@ -1,6 +1,7 @@
 from django.db import models
 from system.models import System
 from player.models import Player
+from tech.models import Tech
 import math
 
 
@@ -8,11 +9,13 @@ class ShipArmour(models.Model):
     name = models.CharField(max_length=250)
     structure = models.IntegerField()
     armour = models.IntegerField()
+    required = models.ForeignKey(Tech)
 
 
 class ShipComputer(models.Model):
     name = models.CharField(max_length=250)
     beamattack = models.IntegerField()
+    required = models.ForeignKey(Tech)
 
 
 class ShipShield(models.Model):
@@ -20,22 +23,26 @@ class ShipShield(models.Model):
     strength = models.IntegerField()
     blocked = models.IntegerField()
     regenerates = models.IntegerField()
+    required = models.ForeignKey(Tech)
 
 
 class ShipHull(models.Model):
     name = models.CharField(max_length=250)
     cost = models.IntegerField()
     space = models.IntegerField()
+    required = models.ForeignKey(Tech)
 
 
 class ShipDrive(models.Model):
     name = models.CharField(max_length=250)
     speed = models.IntegerField()
+    required = models.ForeignKey(Tech)
 
 
 class ShipFuel(models.Model):
     name = models.CharField(max_length=250)
     parsecs = models.IntegerField()
+    required = models.ForeignKey(Tech)
 
 
 class ShipDesign(models.Model):
