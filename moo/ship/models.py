@@ -53,8 +53,8 @@ class Ship(models.Model):
     name = models.CharField(max_length=250)
     owner = models.ForeignKey(Player)
     system = models.ForeignKey(System, null=True)
-    x = models.IntegerField()
-    y = models.IntegerField()
+    x = models.FloatField()
+    y = models.FloatField()
     design = models.ForeignKey(ShipDesign)
     destsystem = models.ForeignKey(System, null=True, related_name='destination')
 
