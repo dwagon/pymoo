@@ -18,6 +18,7 @@
         <ul>
         {% for s in ship.inRange %}
             <li> <a href="{% url 'systemDetails' s.id %}">{{s.name}}</a>
+            <a href="{% url 'setDestination' ship.id s.id %}">Set Destination</a>
         {% endfor %}
         </ul>
     {% else %}
