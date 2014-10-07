@@ -8,8 +8,8 @@ def initial_data(apps, schema_editor):
     SF = apps.get_model('ship', 'ShipFuel')
     SF(name='Standard Fuel Cells', parsecs=4).save()
     SF(name='Deuterium Fuel Cells', parsecs=6).save()
-    SF(name='Irridium Fuel Cells', parsecs=9).save()
-    SF(name='Urridium Fuel Cells', parsecs=12).save()
+    SF(name='Iridium Fuel Cells', parsecs=9).save()
+    SF(name='Uridium Fuel Cells', parsecs=12).save()
     SF(name='Thorium Fuel Cells', parsecs=99999).save()
 
 
