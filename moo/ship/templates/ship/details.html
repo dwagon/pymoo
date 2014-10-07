@@ -3,12 +3,23 @@
 <ul>
 <li> Name: {{ship.name}}
 <li> Owner: <a href="{% url 'playerDetails' ship.owner.id %}">{{ship.owner.name}}</a>
-<li> System: <a href="{% url 'systemDetails' ship.system.id %}">{{ship.system.name}}</a>
+<li> System: 
+{% if ship.system %}
+    <a href="{% url 'systemDetails' ship.system.id %}">{{ship.system.name}}</a>
+{% else %}
+    Deep Space (x={{ship.x}}, y={{ship.y}})
+{% endif %}
+<li> Destination: 
+{% if ship.destsystem %}
+    <a href="{% url 'systemDetails' ship.destsystem.id %}">{{ship.destsystem.name}}</a> ({{ship.destsystem.x}}, {{ship.destsystem.y}})
+{% else %}
+None
+{% endif %}
 <li> Design: 
     <ul>
     <li> Hull: {{ship.design.hull.name}}
-    <li> Drive: {{ship.design.drive.name}}
-    <li> Fuel: {{ship.design.fuel.name}}
+    <li> Drive: {{ship.design.drive.name}} ({{ship.design.drive.speed}} parsecs/turn)
+    <li> Fuel: {{ship.design.fuel.name}} ({{ship.design.fuel.parsecs}} parsecs range)
     <li> Shield: {{ship.design.shield.name}}
     <li> Computer: {{ship.design.computer.name}}
     <li> Armour: {{ship.design.armour.name}}
