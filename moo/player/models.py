@@ -45,6 +45,9 @@ class Player(models.Model):
         homeplan.climate = 'TE'
         homeplan.richness = 'A'
         homeplan.population = 8000000
+        homeplan.workers = 3
+        homeplan.farmers = 4
+        homeplan.scientists = 1
         homeplan.save()
         return homeplan
 

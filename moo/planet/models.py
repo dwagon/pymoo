@@ -39,6 +39,9 @@ class Planet(models.Model):
     orbit = models.IntegerField()
     owner = models.ForeignKey(Player, null=True, default=None)
     population = models.IntegerField(default=0)
+    farmers = models.IntegerField(default=0)
+    workers = models.IntegerField(default=0)
+    scientists = models.IntegerField(default=0)
 
     def setClimate(self):
         climmap = {
