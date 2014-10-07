@@ -13,6 +13,16 @@
     <li> Computer: {{ship.design.computer.name}}
     <li> Armour: {{ship.design.armour.name}}
     </ul>
+<li> Systems in Range:
+    {% if ship.inRange %}
+        <ul>
+        {% for s in ship.inRange %}
+            <li> <a href="{% url 'systemDetails' s.id %}">{{s.name}}</a>
+        {% endfor %}
+        </ul>
+    {% else %}
+        None
+    {% endif %}
 </ul>
 </body>
 </html>

@@ -59,6 +59,12 @@ class System(models.Model):
         for o in range(MAX_ORBITS):
             self.makeOrbit(o)
 
+    def range(self, s):
+        """ Range to the other system """
+        import math
+        ans = math.sqrt((s.x - self.x)**2 + (s.y - self.y)**2)
+        return ans
+
     def makeOrbit(self, orbit):
         from planet.models import Planet
         cat = self.category

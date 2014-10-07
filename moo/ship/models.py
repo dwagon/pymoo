@@ -61,4 +61,11 @@ class Ship(models.Model):
     def turn(self):
         pass
 
+    def inRange(self):
+        r = self.design.fuel.parsecs
+        allsys = System.objects.filter(game=self.system.game)
+        ans = [s for s in allsys if self.system.range(s) <= r]
+        ans.remove(self.system)
+        return ans
+
 # EOF
