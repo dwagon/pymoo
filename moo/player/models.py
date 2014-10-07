@@ -52,8 +52,8 @@ class Player(models.Model):
         from ship.models import ShipDesign, Ship
         scout = ShipDesign.objects.get(name='Scout')
         sc1 = Ship(name='Scout1', owner=self, design=scout)
-        sc1.x = 0
-        sc1.y = 0
+        sc1.x = homeplanet.system.x
+        sc1.y = homeplanet.system.y
         sc1.system = homeplanet.system
         sc1.save()
 
