@@ -94,12 +94,50 @@ class Player(models.Model):
         return available
 
     def addInitialShips(self, homeplanet):
+        for i in range(2):
+            self.addScout(homeplanet, 'Scout%0d' % i)
+        self.addColonyShip(homeplanet)
+
+    def addScout(self, homeplanet, shipname):
         from ship.models import ShipDesign, Ship
         scout = ShipDesign.objects.get(name='Scout')
-        sc1 = Ship(name='Scout1', owner=self, design=scout)
-        sc1.x = homeplanet.system.x
-        sc1.y = homeplanet.system.y
-        sc1.system = homeplanet.system
-        sc1.save()
+        sc = Ship(name=shipname, owner=self, design=scout)
+        sc.x = homeplanet.system.x
+        sc.y = homeplanet.system.y
+        sc.system = homeplanet.system
+        sc.save()
+
+    def addColonyShip(self, planet):
+        return  # TODO
+        from ship.models import ShipDesign
+        coldes = ShipDesign.objects.filter(name='Colony Ship')
+        if coldes:
+            coldes = coldes[0]
+        else:
+            coldes = ShipDesign(name='Colony Ship')
+        coldes.drive = self.bestDrive()
+        coldes.fuel = self.bestFuel()
+        coldes.save()
+
+    def bestDrive(self):
+        from ship.models import ShipDrive
+        drives = ShipDrive.objects.all().order_by('-speed')
+        for d in drives:
+            if self.knowsTech(d.required):
+                return d
+        return None
+
+    def bestFuel(self):
+        from ship.models import ShipFuel
+        drives = ShipFuel.objects.all().order_by('-parsecs')
+        for d in drives:
+            if self.knowsTech(d.required):
+                return d
+        return None
+
+    def knowsTech(self, tech):
+        if tech in self.know.all():
+            return True
+        return False
 
 # EOF

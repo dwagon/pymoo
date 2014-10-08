@@ -18,10 +18,35 @@
     <li> Climate: {{planet.get_climate_display}}
     <li> Population: {{planet.population}}
     <li> Max Population: {{planet.maxpop}}
-    <li> Farmers: {{planet.farmers}}
+    <li> Farmers: {{planet.farmers}} 
+        {% if planet.farmers %}
+            (<a href="{% url 'assignWorkers' planet.id 'F' 'S' %}">S</a> &nbsp;
+            <a href="{% url 'assignWorkers' planet.id 'F' 'W' %}">W</a> &nbsp;
+            <a href="{% url 'assignWorkers' planet.id 'F' 'U' %}">U</a>)
+        {% endif %}
     <li> Workers: {{planet.workers}}
+        {% if planet.workers %}
+            (<a href="{% url 'assignWorkers' planet.id 'W' 'F' %}">F</a> &nbsp;
+            <a href="{% url 'assignWorkers' planet.id 'W' 'S' %}">S</a> &nbsp;
+            <a href="{% url 'assignWorkers' planet.id 'W' 'U' %}">U</a>)
+        {% endif %}
     <li> Scientists: {{planet.scientists}}
+        {% if planet.scientists %}
+            (<a href="{% url 'assignWorkers' planet.id 'S' 'F' %}">F</a> &nbsp;
+            <a href="{% url 'assignWorkers' planet.id 'S' 'W' %}">W</a> &nbsp;
+            <a href="{% url 'assignWorkers' planet.id 'S' 'U' %}">U</a>)
+        {% endif %}
+    <li> Unassigned: {{planet.unassigned}}
+        {% if planet.unassigned %}
+            (<a href="{% url 'assignWorkers' planet.id 'U' 'F' %}">F</a> &nbsp;
+            <a href="{% url 'assignWorkers' planet.id 'U' 'S' %}">S</a> &nbsp;
+            <a href="{% url 'assignWorkers' planet.id 'U' 'W' %}">W</a>)
+        {% endif %}
 {% endif %}
 </ul>
 </body>
 </html>
+
+
+
+

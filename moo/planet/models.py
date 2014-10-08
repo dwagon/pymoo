@@ -42,6 +42,7 @@ class Planet(models.Model):
     farmers = models.IntegerField(default=0)
     workers = models.IntegerField(default=0)
     scientists = models.IntegerField(default=0)
+    unassigned = models.IntegerField(default=0)
 
     def setClimate(self):
         climmap = {
@@ -87,8 +88,34 @@ class Planet(models.Model):
     def research_points(self):
         return 3 * self.scientists
 
+    def reassignWorkers(self, old, new):
+        if old not in ('F', 'S', 'W', 'U'):
+            return False
+        if new not in ('F', 'S', 'W', 'U'):
+            return False
+        if old == 'F' and self.farmers:
+            self.farmers -= 1
+        if old == 'S' and self.scientists:
+            self.scientists -= 1
+        if old == 'W' and self.workers:
+            self.workers -= 1
+        if old == 'U' and self.unassigned:
+            self.unassigned -= 1
+        if new == 'F':
+            self.farmers += 1
+        if new == 'S':
+            self.scientists += 1
+        if new == 'W':
+            self.workers += 1
+        if new == 'U':
+            self.unassigned += 1
+        self.save()
+
     def turn(self):
+        oldpop = int(self.population / 1000000)
         self.population += self.pop_growth()
+        if int(self.population / 1000000) != oldpop:
+            self.unassigned += 1
         if self.owner:
             self.owner.research += self.research_points()
             self.owner.save()
