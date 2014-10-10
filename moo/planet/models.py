@@ -111,8 +111,27 @@ class Planet(models.Model):
         self.size = probmap(sizemap)
         self.save()
 
+    def work_points(self):
+        prod = 6 * self.workers
+        for bld in self.buildings.all():
+            prod += bld.hook_production_boost(self)
+        return prod
+
     def research_points(self):
-        return 3 * self.scientists
+        rp = 3 * self.scientists
+        for bld in self.buildings.all():
+            rp += bld.hook_research_boost(self)
+        return rp
+
+    def food_produced(self):
+        agmap = {'TX': 0, 'R': 0, 'B': 0, 'D': 1, 'TU': 1, 'O': 2, 'S': 2, 'A': 1, 'TE': 2, 'G': 3}
+        return agmap[self.climate] * self.farmers
+
+    def food_consumed(self):
+        return self.population / 1000000
+
+    def food_points(self):
+        return self.food_produced() - self.food_consumed()
 
     def reassignWorkers(self, old, new):
         if old not in ('F', 'S', 'W', 'U'):

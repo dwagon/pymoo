@@ -39,6 +39,11 @@
             <a href="{% url 'assignWorkers' planet.id 'F' 'W' %}">W</a> &nbsp;
             <a href="{% url 'assignWorkers' planet.id 'F' 'U' %}">U</a>)
         {% endif %}
+        <ul>
+        <li> Produced: {{planet.food_produced}}
+        <li> Consumed: {{planet.food_consumed}}
+        <li> Surplus: {{planet.food_points}}
+        </ul>
     <li> Workers: {{planet.workers}}
         {% if planet.workers %}
             (<a href="{% url 'assignWorkers' planet.id 'W' 'F' %}">F</a> &nbsp;
@@ -55,6 +60,9 @@
             <a href="{% url 'assignWorkers' planet.id 'S' 'W' %}">W</a> &nbsp;
             <a href="{% url 'assignWorkers' planet.id 'S' 'U' %}">U</a>)
         {% endif %}
+        <ul>
+        <li> {{planet.research_points}} RP
+        </ul>
     <li> Unassigned: {{planet.unassigned}}
         {% if planet.unassigned %}
             (<a href="{% url 'assignWorkers' planet.id 'U' 'F' %}">F</a> &nbsp;

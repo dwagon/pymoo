@@ -4,10 +4,9 @@
 <li> Name: {{player.name}}
 <li> Game: <a href="{% url 'gameDetails' player.game.id %}">{{player.game.name}}</a>
 <li> Race: {{player.race}}
-<li> Research: {{player.research}} ({{player.research_points_per_turn}} RP/turn)
 <li> Researching: 
 {% if player.researching %}
-<a href="{% url 'techDetails' player.researching.id %}">{{player.researching}}</a> ({{player.research_turns_to_go}} turns left)
+<a href="{% url 'techDetails' player.researching.id %}">{{player.researching}}</a> ({{player.research_points_per_turn}} RP/turn)({{player.research_turns_to_go}} turns left)
 {% else %}
 None
 {% endif %}
