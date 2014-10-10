@@ -29,6 +29,9 @@ class Player(models.Model):
         m.save()
 
     def turn(self):
+        for msg in self.message.filter(read=False):
+            msg.read = True
+            msg.save()
         for ship in self.owned_ships():
             ship.turn()
         if self.researching and self.research > self.researching.categ.cost:
@@ -38,6 +41,9 @@ class Player(models.Model):
             self.addMessage("Researched %s" % self.researching.name)
             self.researching = None
             self.save()
+
+    def unread_messages(self):
+        return self.message.filter(read=False)
 
     def owned_planets(self):
         from planet.models import Planet

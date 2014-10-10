@@ -4,7 +4,7 @@
 <li> Name: {{player.name}}
 <li> Game: <a href="{% url 'gameDetails' player.game.id %}">{{player.game.name}}</a>
 <li> Race: {{player.race}}
-<li> Messages: {% for msg in player.message.all %}
+<li> Messages: {% for msg in player.unread_message %}
     <ul>
     <li> {{msg}}
     </ul>
