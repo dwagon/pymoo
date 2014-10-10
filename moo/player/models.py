@@ -5,6 +5,15 @@ from tech.models import Tech, TechCategory
 import random
 
 
+class Message(models.Model):
+    message = models.CharField(max_length=250)
+    read = models.BooleanField(default=False)
+    player = models.ForeignKey('Player', related_name='message')
+
+    def __str__(self):
+        return self.message
+
+
 class Player(models.Model):
     name = models.CharField(max_length=250)
     game = models.ForeignKey(Game)
@@ -15,6 +24,10 @@ class Player(models.Model):
     researched = models.ManyToManyField(TechCategory, null=True, default=None, related_name='researched')
     know = models.ManyToManyField(Tech, null=True, default=None, related_name='know')
 
+    def addMessage(self, msg):
+        m = Message(message=msg, player=self)
+        m.save()
+
     def turn(self):
         for ship in self.owned_ships():
             ship.turn()
@@ -22,6 +35,7 @@ class Player(models.Model):
             self.research -= self.researching.categ.cost
             self.researched.add(self.researching.categ)
             self.know.add(self.researching)
+            self.addMessage("Researched %s" % self.researching.name)
             self.researching = None
             self.save()
 

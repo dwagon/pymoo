@@ -175,6 +175,7 @@ class Planet(models.Model):
             self.build_points += self.work_points()
             if self.build_points >= self.constructing.cost:
                 self.addBuilding(self.constructing)
+                self.owner.addMessage("Finished building %s on %s" % (self.constructing.name, self.name))
                 self.build_points = 0
                 self.constructing = None
 
@@ -196,6 +197,7 @@ class Planet(models.Model):
             b += bld.hook_pop_boost(self)
         if self.food_points() < 0:
             b -= 50000 * abs(self.food_points())
+            self.owner.addMessage("Starvation on %s" % self.name)
         return b
 
 # EOF
