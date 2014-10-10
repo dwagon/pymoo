@@ -37,6 +37,8 @@ class Player(models.Model):
 
     def research_turns_to_go(self, tech=None):
         points = self.research_points_per_turn()
+        if points == 0:
+            return 9999999
         if tech is None:
             tech = self.researching
         required = tech.categ.cost - self.research
