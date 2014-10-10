@@ -57,13 +57,21 @@ class ShipDesign(models.Model):
     missdefense = models.IntegerField()
 
 
+class ShipSpecial(models.Model):
+    name = models.CharField(max_length=250)
+    required = models.ForeignKey(Tech, null=True)
+    drive = models.ForeignKey(ShipDrive, null=True)
+    fuel = models.ForeignKey(ShipFuel, null=True)
+
+
 class Ship(models.Model):
     name = models.CharField(max_length=250)
     owner = models.ForeignKey(Player)
     system = models.ForeignKey(System, null=True)
     x = models.FloatField()
     y = models.FloatField()
-    design = models.ForeignKey(ShipDesign)
+    design = models.ForeignKey(ShipDesign, null=True)
+    special = models.ForeignKey(ShipSpecial, null=True)
     destsystem = models.ForeignKey(System, null=True, related_name='destination')
 
     def turn(self):
