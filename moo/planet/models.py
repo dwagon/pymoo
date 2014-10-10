@@ -84,6 +84,10 @@ class Planet(models.Model):
         self.richness = probmap(richprob[self.system.category.name])
         self.save()
 
+    def available_to_build(self):
+        available = self.available_buildings()
+        return available
+
     def available_buildings(self):
         """ Return a list of buildings that can be built on this planet """
         available = []
@@ -125,7 +129,10 @@ class Planet(models.Model):
 
     def food_produced(self):
         agmap = {'TX': 0, 'R': 0, 'B': 0, 'D': 1, 'TU': 1, 'O': 2, 'S': 2, 'A': 1, 'TE': 2, 'G': 3}
-        return agmap[self.climate] * self.farmers
+        food = agmap[self.climate] * self.farmers
+        for bld in self.buildings.all():
+            food += bld.hook_food_boost(self)
+        return food
 
     def food_consumed(self):
         return self.population / 1000000
@@ -177,12 +184,18 @@ class Planet(models.Model):
         sizemap = {'T': 1, 'S': 2, 'M': 3, 'L': 4, 'H': 5}
         climmult = {'TX': 0.25, 'R': 0.25, 'B': 0.25, 'D': 0.25, 'TU': 0.25, 'O': 0.25, 'S': 0.40, 'A': 0.60, 'TE': 0.80, 'G': 1.0}
         maxp = 5000000.0 * sizemap[self.size] * climmult[self.climate]
+        for bld in self.buildings.all():
+            maxp += bld.hook_maxpop_boost(self)
         return int(maxp)
 
     def pop_growth(self):
         popmax = self.maxpop()
         pop = self.population
         b = int(math.sqrt(2000.0 * pop * (popmax - pop) / popmax))
+        for bld in self.buildings.all():
+            b += bld.hook_pop_boost(self)
+        if self.food_points() < 0:
+            b -= 50000 * abs(self.food_points())
         return b
 
 # EOF

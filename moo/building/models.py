@@ -21,12 +21,48 @@ class Building(models.Model):
         elif self.name == 'Robotic Factory':
             bonusmap = {'UP': 5, 'P': 8, 'A': 10, 'R': 15, "UR": 20}
             return bonusmap[planet.richness]
+        elif self.name == 'Deep Core Mine':
+            return 15 + 3 * planet.workers
+        elif self.name == 'Astro University':
+            return planet.workers
         else:
             return 0
 
     def hook_research_boost(self, planet):
         if self.name == 'Research Lab':
             return 5 + planet.scientists
+        elif self.name == 'Supercomputer':
+            return 10 + 2 * planet.scientists
+        elif self.name == 'Autolab':
+            return 30
+        elif self.name == 'Galactic Cybernet':
+            return 15 + 3 * planet.scientists
+        elif self.name == 'Astro University':
+            return planet.scientists
+        else:
+            return 0
+
+    def hook_food_boost(self, planet):
+        if self.name == 'Hydroponic Farm':
+            return 2
+        elif self.name == 'Subterranean Farms':
+            return 4
+        elif self.name == 'Weather Controller':
+            return 2 * planet.farmers
+        elif self.name == 'Astro University':
+            return planet.scientists
+        else:
+            return 0
+
+    def hook_pop_boost(self, planet):
+        if self.name == 'Cloning Center':
+            return 100000
+        else:
+            return 0
+
+    def hook_maxpop_boost(self, planet):
+        if self.name == 'Biosphere':
+            return 2000000
         else:
             return 0
 

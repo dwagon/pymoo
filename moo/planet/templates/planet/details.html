@@ -28,7 +28,7 @@
     {% endif %}
     <li> Can build:
         <ul>
-        {% for bld in planet.available_buildings %}
+        {% for bld in planet.available_to_build %}
             <li> <a href="{% url 'constructBuilding' planet.id bld.id %}">Construct {{bld.name}} for {{bld.cost}}</a>
         {% endfor %}
         </ul>
