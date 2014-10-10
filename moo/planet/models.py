@@ -2,6 +2,7 @@ from django.db import models
 from system.models import System
 from player.models import Player
 from moo.utils import probmap
+from building.models import Building
 import math
 
 
@@ -43,6 +44,9 @@ class Planet(models.Model):
     workers = models.IntegerField(default=0)
     scientists = models.IntegerField(default=0)
     unassigned = models.IntegerField(default=0)
+    buildings = models.ManyToManyField(Building, null=True, related_name='built')
+    constructing = models.ForeignKey(Building, null=True, default=None, related_name='constructing')
+    build_points = models.IntegerField(default=0)
 
     def setClimate(self):
         climmap = {
@@ -79,6 +83,28 @@ class Planet(models.Model):
         }
         self.richness = probmap(richprob[self.system.category.name])
         self.save()
+
+    def available_buildings(self):
+        """ Return a list of buildings that can be built on this planet """
+        available = []
+        knowntechs = self.owner.know.all()
+        for bld in Building.objects.all():
+            if bld.required not in knowntechs:
+                continue
+            if bld in self.buildings.all():
+                continue
+            if bld == self.constructing:
+                continue
+            available.append(bld)
+        return available
+
+    def constructBuilding(self, bld):
+        self.constructing = bld
+        self.build_points = 0
+        self.save()
+
+    def addBuilding(self, bld):
+        self.buildings.add(bld)
 
     def setSize(self):
         sizemap = {'T': 10, 'S': 20, 'M': 40, 'L': 20, 'H': 10}
@@ -119,6 +145,12 @@ class Planet(models.Model):
         if self.owner:
             self.owner.research += self.research_points()
             self.owner.save()
+        if self.constructing:
+            self.build_points += self.work_points()
+            if self.build_points >= self.constructing.cost:
+                self.addBuilding(self.constructing)
+                self.build_points = 0
+                self.constructing = None
 
         self.save()
 
