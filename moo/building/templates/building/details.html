@@ -1,0 +1,11 @@
+<html>
+<body>
+<ul>
+<li> Building: {{building.name}}
+<li> Cost: {{building.cost}}
+<li> Maint: {{building.maint}}
+<li> Required Tech: <a href="{% url 'techDetails' building.required.id %}">{{building.required.name}}</a>
+<li> Description: {{building.desc}}
+</ul>
+</body>
+</html>

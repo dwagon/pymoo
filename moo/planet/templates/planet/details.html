@@ -22,7 +22,7 @@
     <li> Buildings:
         <ul> 
             {% for bld in planet.buildings.all %}
-                <li> {{bld.name}}
+                <li> <a href="{% url 'buildingDetails' bld.id %}">{{bld.name}}</a>
             {% endfor %}
         </ul>
     {% endif %}
