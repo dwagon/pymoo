@@ -12,15 +12,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='RoboticFactoryBuilding',
-            fields=[
-            ],
-            options={
-                'proxy': True,
-            },
-            bases=('building.building',),
-        ),
         migrations.AddField(
             model_name='building',
             name='maint',
@@ -37,32 +28,5 @@ class Migration(migrations.Migration):
             name='required',
             field=models.ForeignKey(default=0, to='tech.Tech'),
             preserve_default=False,
-        ),
-        migrations.CreateModel(
-            name='AutomatedFactoryBuilding',
-            fields=[
-            ],
-            options={
-                'proxy': True,
-            },
-            bases=('building.building',),
-        ),
-        migrations.CreateModel(
-            name='ResearchLaboratoryBuilding',
-            fields=[
-            ],
-            options={
-                'proxy': True,
-            },
-            bases=('building.building',),
-        ),
-        migrations.CreateModel(
-            name='RoboMiningPlanetBuilding',
-            fields=[
-            ],
-            options={
-                'proxy': True,
-            },
-            bases=('building.building',),
         ),
     ]
