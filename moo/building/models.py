@@ -14,6 +14,12 @@ class Building(models.Model):
     def __str__(self):
         return self.name
 
+    def can_build(self, planet):
+        if self.name == 'Soil Enrichment':
+            if planet.climate in ('R', 'TX', 'B'):
+                return False
+        return True
+
     def hook_production_boost(self, planet):
         if self.name == 'Automated Factory':
             return 5 + planet.workers
@@ -26,6 +32,8 @@ class Building(models.Model):
             return 15 + 3 * planet.workers
         elif self.name == 'Astro University':
             return planet.workers
+        elif self.name == 'Recyclotron':
+            return math.ceil(planet.population / 1000000)
         else:
             return 0
 
@@ -51,7 +59,9 @@ class Building(models.Model):
         elif self.name == 'Weather Controller':
             return 2 * planet.farmers
         elif self.name == 'Astro University':
-            return planet.scientists
+            return planet.farmers
+        elif self.name == 'Soil Enrichment':
+            return planet.farmers
         else:
             return 0
 
@@ -62,7 +72,7 @@ class Building(models.Model):
             return 0
 
     def hook_maxpop_boost(self, planet):
-        if self.name == 'Biosphere':
+        if self.name == 'Biospheres':
             return 2000000
         else:
             return 0
@@ -70,7 +80,7 @@ class Building(models.Model):
     def hook_income_boost(self, planet):
         if self.name == 'Space Port':
             return 1.5
-        if self.name == 'Stock Exchange':
+        elif self.name == 'Stock Exchange':
             return 2.0
         else:
             return 1.0
