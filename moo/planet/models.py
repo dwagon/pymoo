@@ -135,7 +135,7 @@ class Planet(models.Model):
         return food
 
     def food_consumed(self):
-        return self.population / 1000000
+        return int(math.ceil(self.population / 1000000))
 
     def food_points(self):
         return self.food_produced() - self.food_consumed()
@@ -179,13 +179,22 @@ class Planet(models.Model):
         self.save()
 
     def turn(self):
+        if not self.owner:
+            return
         oldpop = int(self.population / 1000000)
         self.population += self.pop_growth()
-        if int(self.population / 1000000) != oldpop:
+        self.population = min(self.maxpop(), self.population)
+        if int(self.population / 1000000) > oldpop:
             self.unassigned += 1
-        if self.owner:
-            self.owner.research += self.research_points()
-            self.owner.save()
+        if self.population <= 0:
+            self.owner.addMessage("Colony %s starved to exinction" % self.name)
+            self.owner = None
+            self.save()
+            return
+        self.owner.research += self.research_points()
+        self.owner.save()
+        if self.unassigned:
+            self.owner.addMessage("Slackers on %s" % self.name)
         if self.constructing:
             self.build_points += self.work_points()
             if self.build_points >= self.constructing.cost:
@@ -215,6 +224,6 @@ class Planet(models.Model):
         if self.food_points() < 0:
             b -= 50000 * abs(self.food_points())
             self.owner.addMessage("Starvation on %s" % self.name)
-        return b
+        return int(b)
 
 # EOF
