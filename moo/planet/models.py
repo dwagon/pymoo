@@ -102,6 +102,8 @@ class Planet(models.Model):
         available = []
         knowntechs = self.owner.know.all()
         for bld in Building.objects.all():
+            if not bld.can_build(self):
+                continue
             if bld.required not in knowntechs:
                 continue
             if bld in self.buildings.all():
@@ -212,7 +214,10 @@ class Planet(models.Model):
         self.population += self.pop_growth()
         self.population = min(self.maxpop(), self.population)
         if int(self.population / 1000000) > oldpop:
-            self.unassigned += 1
+            if self.food_points() < 0:
+                self.farmers += 1
+            else:
+                self.unassigned += 1
         if self.population <= 0:
             self.owner.addMessage("Colony %s starved to exinction" % self.name)
             self.owner = None

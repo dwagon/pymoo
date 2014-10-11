@@ -31,6 +31,11 @@
                         <th>Owner</th>
                         <th>Constructing</th>
                         <th>F/W/S/U</th>
+                        <th>Climate</th>
+                        <th>Size</th>
+                        <th>Richness</th>
+                        <th>Gravity</th>
+                        <th>Category</th>
                     </tr>
                     {% for planet in system.planets.all %}
                         <tr>
@@ -38,6 +43,11 @@
                             <td>{% if planet.owner %}<a href="{% url 'playerDetails' planet.owner.id %}">{{planet.owner.name}}</a>{% else %} None {% endif %}</td>
                             <td>{{planet.constructing}}</td>
                             <td>{{planet.farmers}} / {{planet.workers}} / {{planet.scientists}} / {{planet.unassigned}}</td>
+                            <td>{{planet.get_climate_display}}</td>
+                            <td>{{planet.get_size_display}}</td>
+                            <td>{{planet.get_richness_display}}</td>
+                            <td>{{planet.get_gravity_display}}</td>
+                            <td>{{planet.get_categ_display}}</td>
                         </tr>
                     {% endfor %}
                 </table>

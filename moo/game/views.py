@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.core.exceptions import ObjectDoesNotExist
 from .models import Game, GameSize
 from system.models import System
 from player.models import Player
@@ -23,7 +24,10 @@ def delete(request, game_id):
 
 def details(request, game_id):
     d = {}
-    d['game'] = get_object_or_404(Game, pk=game_id)
+    try:
+        d['game'] = Game.objects.get(pk=game_id)
+    except ObjectDoesNotExist:
+        return redirect('index')
     d['systems'] = System.objects.filter(game=d['game'])
     d['players'] = Player.objects.filter(game=d['game'])
     return render(request, 'game/details.html', d)

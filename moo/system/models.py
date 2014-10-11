@@ -81,10 +81,10 @@ class System(models.Model):
             p.categ = 'GG'
         else:
             p.categ = 'P'
+            p.setSize()
+            p.setRichness()
+            p.setGravity()
+            p.setClimate()
         p.save()
-        p.setSize()
-        p.setRichness()
-        p.setGravity()
-        p.setClimate()
 
 # EOF

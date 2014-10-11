@@ -2,22 +2,23 @@
 <body>
 <ul>
 <li> Name: {{planet.name}}
-<li> System: <a href="{% url 'systemDetails' planet.system.id %}">{{planet.system.name}}</a>
-<li> Condition: {{planet.condition}}
-<li> Category: {{planet.get_categ_display}}
-<li> Size: {{planet.get_size_display}}
-<li> Orbit: {{planet.orbit}}
 {% if planet.owner %}
 <li> Owner: <a href="{% url 'playerDetails' planet.owner.id %}">{{planet.owner.name}}</a>
 {% else %}
 <li> Unowned
 {% endif %}
+<li> System: <a href="{% url 'systemDetails' planet.system.id %}">{{planet.system.name}}</a>
+<li> Condition: {{planet.condition}}
+<li> Category: {{planet.get_categ_display}}
+<li> Size: {{planet.get_size_display}}
+<li> Orbit: {{planet.orbit}}
 {% if planet.get_categ_display == 'Planet' %}
     <li> Richness: {{planet.get_richness_display}}
     <li> Gravity: {{planet.get_gravity_display}}
     <li> Climate: {{planet.get_climate_display}}
-    <li> Population: {{planet.population}}
-    <li> Max Population: {{planet.maxpop}}
+    <li> Population: {{planet.population}} / {{planet.maxpop}} ({{planet.pop_growth}})
+    <li> Income: {{planet.income}} - {{planet.expenses}} = {{planet.profit}}
+
     {% if planet.buildings.all %}
     <li> Buildings:
         <ul> 
@@ -29,7 +30,7 @@
     <li> Can build:
         <ul>
         {% for bld in planet.available_to_build %}
-            <li> <a href="{% url 'constructBuilding' planet.id bld.id %}">Construct {{bld.name}} for {{bld.cost}}</a>
+            <li> <a href="{% url 'constructBuilding' planet.id bld.id %}">{{bld.name}}{% if bld.cost > 0 %} for {{bld.cost}} {% endif %}</a>
         {% endfor %}
         </ul>
 

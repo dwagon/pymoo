@@ -35,4 +35,10 @@ class Tech(models.Model):
         else:
             return 1.0
 
+    def hook_pollution_tolerance_modifier(self, planet):
+        if self.name == 'Nano Disassemblers':
+            return 2
+        else:
+            return 1
+
 # EOF
