@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='building',
             name='required',
-            field=models.ForeignKey(default=0, to='tech.Tech'),
+            field=models.ForeignKey(default=0, to='tech.Tech', null=True),
             preserve_default=False,
         ),
     ]

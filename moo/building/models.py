@@ -8,7 +8,7 @@ class Building(models.Model):
     cost = models.IntegerField()
     maint = models.IntegerField(default=0)
     desc = models.CharField(max_length=1024)
-    required = models.ForeignKey(Tech)
+    required = models.ForeignKey(Tech, null=True)
 
     def __str__(self):
         return self.name

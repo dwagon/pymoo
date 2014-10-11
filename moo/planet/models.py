@@ -88,7 +88,12 @@ class Planet(models.Model):
         self.save()
 
     def available_to_build(self):
-        available = self.available_buildings()
+        available = []
+        # Ships
+        available.extend(self.available_buildings())
+        available.append(Building.objects.get(name='Housing'))
+        available.append(Building.objects.get(name='Trade Goods'))
+        # Spies
         return available
 
     def available_buildings(self):
@@ -150,6 +155,8 @@ class Planet(models.Model):
         inc = math.ceil(self.population / 1000000)
         for bld in self.buildings.all():
             inc *= bld.hook_income_boost(self)
+        if self.constructing and self.constructing.name == 'Trade Goods':
+            inc += self.work_points() / 2
         return int(inc)
 
     def expenses(self):
@@ -199,12 +206,13 @@ class Planet(models.Model):
         if self.unassigned:
             self.owner.addMessage("Slackers on %s" % self.name)
         if self.constructing:
-            self.build_points += self.work_points()
-            if self.build_points >= self.constructing.cost:
-                self.addBuilding(self.constructing)
-                self.owner.addMessage("Finished building %s on %s" % (self.constructing.name, self.name))
-                self.build_points = 0
-                self.constructing = None
+            if self.constructing.cost >= 0:
+                self.build_points += self.work_points()
+                if self.build_points >= self.constructing.cost:
+                    self.addBuilding(self.constructing)
+                    self.owner.addMessage("Finished building %s on %s" % (self.constructing.name, self.name))
+                    self.build_points = 0
+                    self.constructing = None
 
         self.save()
 
@@ -224,6 +232,8 @@ class Planet(models.Model):
             b += bld.hook_pop_boost(self)
         for tch in self.owner.know.all():
             b *= tch.hook_pop_growthfacter(self)
+        if self.constructing and self.constructing.name == 'Housing':
+            b += 3000 * self.work_points()
         if self.food_points() < 0:
             b -= 50000 * abs(self.food_points())
             self.owner.addMessage("Starvation on %s" % self.name)
