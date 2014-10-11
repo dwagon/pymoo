@@ -13,28 +13,29 @@ class PlanetCondition(models.Model):
 
 class Planet(models.Model):
     CATEG_CHOICES = (
-        ('', "Nothing"), ('AB', "Asteroid Belt"), ('GG', "Gas Giant"), ('P', "Planet")
+        ('NA', "NA"), ('AB', "Asteroid Belt"), ('GG', "Gas Giant"), ('P', "Planet")
     )
     SIZE_CHOICES = (
-        ('T', "Tiny"), ('S', "Small"), ('M', "Medium"), ('L', "Large"), ("H", "Huge")
+        ('NA', "NA"), ('T', "Tiny"), ('S', "Small"), ('M', "Medium"), ('L', "Large"), ("H", "Huge")
     )
     GRAV_CHOICES = (
-        ('L', "Low"), ('N', "Normal"), ('H', "High")
+        ('NA', 'NA'), ('L', "Low"), ('N', "Normal"), ('H', "High")
     )
     RICH_CHOICES = (
-        ('UP', "Ultra Poor"), ('P', "Poor"), ('A', "Abundant"), ('R', "Rich"), ("UR", "Ultra Rich")
+        ('NA', 'NA'), ('UP', "Ultra Poor"), ('P', "Poor"), ('A', "Abundant"), ('R', "Rich"), ("UR", "Ultra Rich")
     )
     CLIMATE_CHOICES = (
+        ('NA', 'NA'),
         ('TX', "Toxic"), ('R', "Radiated"), ('B', "Barren"), ('D', "Desert"),
         ("TU", "Tundra"), ("O", "Ocean"), ("S", "Swamp"), ("A", "Arid"),
         ("TE", "Terran"), ("G", "Gaia")
     )
     name = models.CharField(max_length=250)
-    categ = models.CharField(max_length=2, choices=CATEG_CHOICES, default='')
-    size = models.CharField(max_length=2, choices=SIZE_CHOICES, default='M')
-    gravity = models.CharField(max_length=2, choices=GRAV_CHOICES, default='N')
-    richness = models.CharField(max_length=2, choices=RICH_CHOICES, default='A')
-    climate = models.CharField(max_length=2, choices=CLIMATE_CHOICES, default='T')
+    categ = models.CharField(max_length=2, choices=CATEG_CHOICES, default='NA')
+    size = models.CharField(max_length=2, choices=SIZE_CHOICES, default='NA')
+    gravity = models.CharField(max_length=2, choices=GRAV_CHOICES, default='NA')
+    richness = models.CharField(max_length=2, choices=RICH_CHOICES, default='NA')
+    climate = models.CharField(max_length=2, choices=CLIMATE_CHOICES, default='NA')
     condition = models.ForeignKey(PlanetCondition, null=True)
     system = models.ForeignKey(System, related_name='planets')
     orbit = models.IntegerField()

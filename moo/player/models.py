@@ -95,7 +95,7 @@ class Player(models.Model):
                 found = True
                 break
 
-        sysplans = [pln for pln in Planet.objects.filter(system=syst)]
+        sysplans = [pln for pln in Planet.objects.filter(system=syst, categ='P')]
         homeplan = random.choice(sysplans)
         homeplan.gravity = 'N'
         homeplan.size = 'L'
