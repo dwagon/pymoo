@@ -71,7 +71,7 @@ def initial_data(apps, schema_editor):
     BB(name='Alien Control Center', cost=60, maint=1, required=t, desc="""The Alien Management Centre is used to control the alien population of an occupied colony. This facility assimilates conquered populations at the rate of 1 per 2 turns, regardless of government. The adjustment for a Charismatic or Repulsive race is applied to this base rate. This building also removes the 20% morale penalty from multi-racial colonies, and it halves the unrest of the assimilated populations, decreasing the chance of revolt.""").save()
 
     t = TT.objects.get(name='Planetary Stock-Exchange')
-    BB(name='Planetary Stock Exchange', cost=150, maint=2, required=t, desc="""The establishment of a Planetary Stock Exchange increases the revenues earned on a single planet by 100%.""").save()
+    BB(name='Stock Exchange', cost=150, maint=2, required=t, desc="""The establishment of a Planetary Stock Exchange increases the revenues earned on a single planet by 100%.""").save()
 
     t = TT.objects.get(name='Astro University')
     BB(name='Astro University', cost=200, maint=4, required=t, desc="""The Astro University (A.U.) uses the most advanced teaching methods available to provide for the training of farmers, workers, and scientists. Each unit of this educated population produces 1 more of everything (food, research, and industry) per turn.""").save()
