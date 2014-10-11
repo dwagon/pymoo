@@ -23,6 +23,8 @@ class Game(models.Model):
     def processTurn(self):
         from system.models import System
         from player.models import Player
+        for plr in Player.objects.filter(game=self):
+            plr.read_old_messages()
         for systm in System.objects.filter(game=self):
             systm.turn()
         for plr in Player.objects.filter(game=self):

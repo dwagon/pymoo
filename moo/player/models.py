@@ -8,6 +8,7 @@ import random
 class Message(models.Model):
     message = models.CharField(max_length=250)
     read = models.BooleanField(default=False)
+    turn = models.IntegerField(default=0)
     player = models.ForeignKey('Player', related_name='message')
 
     def __str__(self):
@@ -25,13 +26,15 @@ class Player(models.Model):
     know = models.ManyToManyField(Tech, null=True, default=None, related_name='know')
 
     def addMessage(self, msg):
-        m = Message(message=msg, player=self)
+        m = Message(message=msg, player=self, turn=self.game.turn)
         m.save()
 
-    def turn(self):
+    def read_old_messages(self):
         for msg in self.message.filter(read=False):
             msg.read = True
             msg.save()
+
+    def turn(self):
         for ship in self.owned_ships():
             ship.turn()
         if self.researching and self.research > self.researching.categ.cost:
