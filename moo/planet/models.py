@@ -140,6 +140,21 @@ class Planet(models.Model):
     def food_points(self):
         return self.food_produced() - self.food_consumed()
 
+    def profit(self):
+        return self.income() - self.expenses()
+
+    def income(self):
+        inc = math.ceil(self.population / 1000000)
+        for bld in self.buildings.all():
+            inc *= bld.hook_income_boost(self)
+        return int(inc)
+
+    def expenses(self):
+        maint = 0
+        for bld in self.buildings.all():
+            maint += bld.maint
+        return maint
+
     def reassignWorkers(self, old, new):
         if old not in ('F', 'S', 'W', 'U'):
             return False

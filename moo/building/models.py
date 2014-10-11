@@ -66,4 +66,12 @@ class Building(models.Model):
         else:
             return 0
 
+    def hook_income_boost(self, planet):
+        if self.name == 'Space Port':
+            return 1.5
+        if self.name == 'Stock Exchange':
+            return 2.0
+        else:
+            return 1.0
+
 # EOF
