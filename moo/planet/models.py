@@ -210,6 +210,8 @@ class Planet(models.Model):
         b = int(math.sqrt(2000.0 * pop * (popmax - pop) / popmax))
         for bld in self.buildings.all():
             b += bld.hook_pop_boost(self)
+        for tch in self.owner.know.all():
+            b *= tch.hook_pop_growthfacter(self)
         if self.food_points() < 0:
             b -= 50000 * abs(self.food_points())
             self.owner.addMessage("Starvation on %s" % self.name)

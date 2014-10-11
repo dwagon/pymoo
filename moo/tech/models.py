@@ -26,5 +26,13 @@ class Tech(models.Model):
     def __str__(self):
         return "%s" % self.name
 
+    def hook_pop_growthfacter(self, planet):
+        if self.name == 'Microbiotics':
+            return 1.25
+        if self.name == 'Universal Antidote':
+            # TODO: This shouldn't stack with microbiotics
+            return 1.5
+        else:
+            return 1.0
 
 # EOF
