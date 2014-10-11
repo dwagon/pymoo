@@ -38,7 +38,7 @@ class Planet(models.Model):
     condition = models.ForeignKey(PlanetCondition, null=True)
     system = models.ForeignKey(System, related_name='planets')
     orbit = models.IntegerField()
-    owner = models.ForeignKey(Player, null=True, default=None)
+    owner = models.ForeignKey(Player, null=True, default=None, related_name='planets')
     population = models.IntegerField(default=0)
     farmers = models.IntegerField(default=0)
     workers = models.IntegerField(default=0)
@@ -47,6 +47,9 @@ class Planet(models.Model):
     buildings = models.ManyToManyField(Building, null=True, related_name='built')
     constructing = models.ForeignKey(Building, null=True, default=None, related_name='constructing')
     build_points = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.name
 
     def setClimate(self):
         climmap = {

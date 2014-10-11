@@ -3,8 +3,7 @@
 <ul>
 <li> Name: {{player.name}}
 <li> Game: <a href="{% url 'gameDetails' player.game.id %}">{{player.game.name}}</a>
-<li> Race: {{player.race}}
-<li> Messages: {% for msg in player.unread_message %}
+<li> Messages: {% for msg in player.unread_messages %}
     <ul>
     <li> {{msg}}
     </ul>
@@ -17,15 +16,28 @@ None
 {% endif %}
 <li> Credits: {{player.credits}}
 <li> Planets:
-    <ul>
-    {% if player.owned_planets %}
+    <table border=1>
+        <tr>
+            <th>Name</th>
+            <th>Constructing</th>
+            <th>F/W/S/U</th>
+            <th>Inc - Exp = Prof</th>
+            <th>Prod - Cons = Food</th>
+            <th>RP</th>
+            <th>Pop (Growth) Max</th>
+        </tr>
         {% for planet in player.owned_planets %}
-            <li> <a href="{% url 'planetDetails' planet.id %}">{{planet.name}}</a>
+        <tr>
+            <td><a href="{% url 'planetDetails' planet.id %}">{{planet.name}}</a></td>
+            <td>{{planet.constructing}}</td>
+            <td>{{planet.farmers}} / {{planet.workers}} / {{planet.scientists}} / {{planet.unassigned}}</td>
+            <td> {{planet.income}} - {{planet.expenses}} = {{planet.profit}}</td>
+            <td> {{planet.food_produced}} - {{planet.food_consumed}} = {{planet.food_points}}</td>
+            <td> {{planet.research_points}} </td>
+            <td> {{planet.population}} ({{planet.pop_growth}}) {{planet.maxpop}} </td>
+        </tr>
         {% endfor %}
-    {% else %}
-         <li> None
-    {% endif %}
-    </ul>
+    </table>
 <li> Ships:
     <ul>
     {% for ship in player.owned_ships %}

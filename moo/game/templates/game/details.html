@@ -2,19 +2,49 @@
 <body>
 <ul>
 <li> Turn: {{game.turn}} <a href="{% url 'nextTurn' game.id %}">Next Turn</a>
-<li> Num Systems: {{game.numplanets}}
 <li> Players:
-    <ul>
+    <table>
+    <tr><th>Name</th><th>Researching</th><th>Credits</th><th>Messages</th></tr>
     {% for plr in players %}
-        <li> <a href="{% url 'playerDetails' plr.id %}">{{plr.name}}</a>
+        <tr>
+            <td><a href="{% url 'playerDetails' plr.id %}">{{plr.name}}</a></td>
+            <td>{{plr.researching}}</td>
+            <td>{{plr.credits}}</td>
+            <td>{% for msg in plr.unread_messages %}{{msg}};&nbsp;{% endfor %}</td>
+        </tr>
     {% endfor %}
-    </ul>
+    </table>
 <li> Systems:
-    <ul>
+    <table>
+    <tr> <th>Name</th> <th>Category</th></tr>
     {% for system in systems %}
-        <li> <a href="{% url 'systemDetails' system.id %}">{{system.name}}</a>
+        <tr>
+            <td><a href="{% url 'systemDetails' system.id %}">{{system.name}}</a></td>
+            <td> {{system.category.name}} </td>
+        </tr>
+        <tr>
+            <td>&nbsp; </td>
+            <td>
+                <table border=1>
+                    <tr>
+                        <th>Name</th>
+                        <th>Owner</th>
+                        <th>Constructing</th>
+                        <th>F/W/S/U</th>
+                    </tr>
+                    {% for planet in system.planets.all %}
+                        <tr>
+                            <td><a href="{% url 'planetDetails' planet.id %}">{{planet.name}}</a></td>
+                            <td>{% if planet.owner %}<a href="{% url 'playerDetails' planet.owner.id %}">{{planet.owner.name}}</a>{% else %} None {% endif %}</td>
+                            <td>{{planet.constructing}}</td>
+                            <td>{{planet.farmers}} / {{planet.workers}} / {{planet.scientists}} / {{planet.unassigned}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </td>
+        </tr>
     {% endfor %}
-    </ul>
+    </table>
 </ul>
 </body>
 </html>

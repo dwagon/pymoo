@@ -43,7 +43,10 @@ class Player(models.Model):
             self.know.add(self.researching)
             self.addMessage("Researched %s" % self.researching.name)
             self.researching = None
-            self.save()
+        for planet in self.planets.all():
+            self.credits += planet.profit()
+
+        self.save()
 
     def unread_messages(self):
         return self.message.filter(read=False)
