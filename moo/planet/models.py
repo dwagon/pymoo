@@ -125,10 +125,26 @@ class Planet(models.Model):
         self.save()
 
     def work_points(self):
+        return self.work_generated() - self.pollution()
+
+    def work_generated(self):
         prod = 6 * self.workers
         for bld in self.buildings.all():
             prod += bld.hook_production_boost(self)
         return prod
+
+    def pollution(self):
+        pollmap = {'T': 2, 'S': 4, 'M': 6, 'L': 8, 'H': 10}
+        prod = self.work_generated()
+        tollerance = pollmap[self.size]
+        for tch in self.owner.know.all():
+            tollerance *= tch.hook_pollution_tolerance_modifier(self)
+        for bld in self.buildings.all():
+            prod -= bld.hook_pollution_reduce(self)
+        for bld in self.buildings.all():
+            prod *= bld.hook_pollution_facter(self)
+        poll = (prod - tollerance) / 2
+        return max(int(poll), 0)
 
     def research_points(self):
         rp = 3 * self.scientists

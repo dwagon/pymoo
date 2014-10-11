@@ -51,7 +51,9 @@
             <a href="{% url 'assignWorkers' planet.id 'W' 'U' %}">U</a>)
         {% endif %} 
         <ul> 
-        <li> Productivity: {{planet.work_points}}
+        <li> Productivity: {{planet.work_generated}}
+        <li> Pollution: {{planet.pollution}}
+        <li> Nett: {{planet.work_points}}
         <li> Building: {{planet.constructing.name}} ({{planet.build_points}} / {{planet.constructing.cost}})
         </ul>
     <li> Scientists: {{planet.scientists}}

@@ -1,3 +1,4 @@
+import math
 from django.db import models
 from tech.models import Tech
 
@@ -73,5 +74,22 @@ class Building(models.Model):
             return 2.0
         else:
             return 1.0
+
+    def hook_pollution_reduce(self, planet):
+        """ What number to modify pollution by """
+        if self.name == 'Recyclotron':
+            return -math.ceil(planet.population / 1000000)
+        return 0
+
+    def hook_pollution_facter(self, planet):
+        """ What facter to modify production by to establish pollution level """
+        if self.name == 'Atmospheric Renewer':
+            return 075
+        elif self.name == 'Pollution Processor':
+            return 0.5
+        elif self.name == 'Core Waste Dumps':
+            return 0
+
+        return 1
 
 # EOF
