@@ -12,6 +12,7 @@ class TechCategory(models.Model):
     name = models.CharField(max_length=250)
     cost = models.IntegerField()
     category = models.CharField(max_length=2, choices=CATEG_CHOICES)
+    general = models.BooleanField(default=False)
 
     def __str__(self):
         return "TechCategory %s" % self.name

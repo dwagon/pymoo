@@ -38,14 +38,23 @@ class Player(models.Model):
         for ship in self.owned_ships():
             ship.turn()
         if self.researching and self.research > self.researching.categ.cost:
-            self.research -= self.researching.categ.cost
-            self.researched.add(self.researching.categ)
-            self.know.add(self.researching)
-            self.addMessage("Researched %s" % self.researching.name)
-            self.researching = None
+            self.learntTech()
         for planet in self.planets.all():
             self.credits += planet.profit()
 
+        self.save()
+
+    def learntTech(self):
+        self.research -= self.researching.categ.cost
+        self.researched.add(self.researching.categ)
+        if self.researching.categ.general:
+            for tech in Tech.objects.filter(categ=self.researching.categ):
+                self.know.add(tech)
+                self.addMessage("Researched %s as part of %s" % (tech, self.researching.categ.name))
+        else:
+            self.know.add(self.researching)
+            self.addMessage("Researched %s" % self.researching.name)
+        self.researching = None
         self.save()
 
     def unread_messages(self):
