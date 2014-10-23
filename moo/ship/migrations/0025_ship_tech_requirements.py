@@ -8,6 +8,22 @@ def initial_hulldata(apps, schema_editor):
     SH = apps.get_model('ship', 'ShipHull')
     T = apps.get_model('tech', 'Tech')
 
+    d = SH.objects.get(name='Frigate')
+    d.required = None
+    d.save()
+
+    d = SH.objects.get(name='Destroyer')
+    d.required = None
+    d.save()
+
+    d = SH.objects.get(name='Cruiser')
+    d.required = None
+    d.save()
+
+    d = SH.objects.get(name='Battleship')
+    d.required = None
+    d.save()
+
     d = SH.objects.get(name='Titan')
     d.required = T.objects.get(name='Titan Construction')
     d.save()
@@ -124,7 +140,7 @@ def initial_shielddata(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ship', '0015_auto_20141007_0333'),
+        ('ship', '0024_null_required_techs'),
         ('tech', '0010_forcefield_techs'),
     ]
 

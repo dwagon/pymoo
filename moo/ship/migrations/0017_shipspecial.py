@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('tech', '0010_forcefield_techs'),
-        ('ship', '0016_ship_tech_requirements'),
+        ('ship', '0015_auto_20141007_0333'),
     ]
 
     operations = [

@@ -9,13 +9,13 @@ class ShipArmour(models.Model):
     name = models.CharField(max_length=250)
     structure = models.IntegerField()
     armour = models.IntegerField()
-    required = models.ForeignKey(Tech)
+    required = models.ForeignKey(Tech, null=True)
 
 
 class ShipComputer(models.Model):
     name = models.CharField(max_length=250)
     beamattack = models.IntegerField()
-    required = models.ForeignKey(Tech)
+    required = models.ForeignKey(Tech, null=True)
 
 
 class ShipShield(models.Model):
@@ -23,26 +23,26 @@ class ShipShield(models.Model):
     strength = models.IntegerField()
     blocked = models.IntegerField()
     regenerates = models.IntegerField()
-    required = models.ForeignKey(Tech)
+    required = models.ForeignKey(Tech, null=True)
 
 
 class ShipHull(models.Model):
     name = models.CharField(max_length=250)
     cost = models.IntegerField()
     space = models.IntegerField()
-    required = models.ForeignKey(Tech)
+    required = models.ForeignKey(Tech, null=True)
 
 
 class ShipDrive(models.Model):
     name = models.CharField(max_length=250)
     speed = models.IntegerField()
-    required = models.ForeignKey(Tech)
+    required = models.ForeignKey(Tech, null=True)
 
 
 class ShipFuel(models.Model):
     name = models.CharField(max_length=250)
     parsecs = models.IntegerField()
-    required = models.ForeignKey(Tech)
+    required = models.ForeignKey(Tech, null=True)
 
 
 class ShipDesign(models.Model):
@@ -55,6 +55,27 @@ class ShipDesign(models.Model):
     armour = models.ForeignKey(ShipArmour)
     beamdefense = models.IntegerField()
     missdefense = models.IntegerField()
+    outdated = models.BooleanField(default=False)
+    owner = models.ForeignKey(Player, null=True)
+
+    def __str__(self):
+        return self.name
+
+    def buildable(self, plr):
+        """ Given the list of available techs can this design be built """
+        if not plr.knowsTech(self.hull.required):
+            return False
+        if not plr.knowsTech(self.drive.required):
+            return False
+        if not plr.knowsTech(self.fuel.required):
+            return False
+        if not plr.knowsTech(self.shield.required):
+            return False
+        if not plr.knowsTech(self.computer.required):
+            return False
+        if not plr.knowsTech(self.armour.required):
+            return False
+        return True
 
 
 class ShipSpecial(models.Model):
