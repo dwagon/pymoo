@@ -41,7 +41,15 @@
                         <tr>
                             <td><a href="{% url 'planetDetails' planet.id %}">{{planet.name}}</a></td>
                             <td>{% if planet.owner %}<a href="{% url 'playerDetails' planet.owner.id %}">{{planet.owner.name}}</a>{% else %} None {% endif %}</td>
-                            <td>{{planet.constructing}}</td>
+                            <td>
+                            {% if planet.con_build %}
+                                {{planet.con_build}}
+                            {% endif %}
+                            {% if planet.con_ship %}
+                                {{planet.con_ship}}
+                            {% endif %}
+                            </td>
+
                             <td>{{planet.farmers}} / {{planet.workers}} / {{planet.scientists}} / {{planet.unassigned}}</td>
                             <td>{{planet.get_climate_display}}</td>
                             <td>{{planet.get_size_display}}</td>

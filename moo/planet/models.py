@@ -1,9 +1,11 @@
 from django.db import models
 from system.models import System
+from ship.models import ShipDesign
 from player.models import Player
 from moo.utils import probmap
 from building.models import Building
 import math
+import sys
 
 
 class PlanetCondition(models.Model):
@@ -46,7 +48,8 @@ class Planet(models.Model):
     scientists = models.IntegerField(default=0)
     unassigned = models.IntegerField(default=0)
     buildings = models.ManyToManyField(Building, null=True, related_name='built')
-    constructing = models.ForeignKey(Building, null=True, default=None, related_name='constructing')
+    con_build = models.ForeignKey(Building, null=True, default=None, related_name='construct_building')
+    con_ship = models.ForeignKey(ShipDesign, null=True, default=None, related_name='construct_ship')
     build_points = models.IntegerField(default=0)
 
     def __str__(self):
@@ -88,13 +91,15 @@ class Planet(models.Model):
         self.richness = probmap(richprob[self.system.category.name])
         self.save()
 
-    def available_to_build(self):
+    def available_ships(self):
+        """ Return a list of ships that can be built on this planet """
+        import sys
+        sds = ShipDesign.objects.filter(outdated=False, owner=self.owner)
+        sds = ShipDesign.objects.filter(outdated=False)
         available = []
-        # Ships
-        available.extend(self.available_buildings())
-        available.append(Building.objects.get(name='Housing'))
-        available.append(Building.objects.get(name='Trade Goods'))
-        # Spies
+        for sd in sds:
+            if sd.buildable(self.owner):
+                available.append(sd)
         return available
 
     def available_buildings(self):
@@ -108,18 +113,36 @@ class Planet(models.Model):
                 continue
             if bld in self.buildings.all():
                 continue
-            if bld == self.constructing:
+            if bld == self.con_build:
                 continue
             available.append(bld)
+        available.append(Building.objects.get(name='Housing'))
+        available.append(Building.objects.get(name='Trade Goods'))
         return available
 
+    def constructShip(self, design):
+        self.con_ship = design
+        self.con_build = None
+        self.build_points = 0
+        self.save()
+
     def constructBuilding(self, bld):
-        self.constructing = bld
+        self.con_build = bld
+        self.con_ship = None
         self.build_points = 0
         self.save()
 
     def addBuilding(self, bld):
         self.buildings.add(bld)
+
+    def addShip(self, shp):
+        from ship.models import Ship
+        sys.stderr.write("Adding ship %s\n" % shp.name)
+        s = Ship(name='unknown', owner=self, design=shp)
+        s.x = self.x
+        s.y = self.y
+        s.system = self
+        s.save()
 
     def setSize(self):
         sizemap = {'T': 10, 'S': 20, 'M': 40, 'L': 20, 'H': 10}
@@ -174,7 +197,7 @@ class Planet(models.Model):
         inc = math.ceil(self.population / 1000000)
         for bld in self.buildings.all():
             inc *= bld.hook_income_boost(self)
-        if self.constructing and self.constructing.name == 'Trade Goods':
+        if self.con_build and self.con_build.name == 'Trade Goods':
             inc += self.work_points() / 2
         return int(inc)
 
@@ -227,15 +250,19 @@ class Planet(models.Model):
         self.owner.save()
         if self.unassigned:
             self.owner.addMessage("Slackers on %s" % self.name)
-        if self.constructing:
-            if self.constructing.cost >= 0:
-                self.build_points += self.work_points()
-                if self.build_points >= self.constructing.cost:
-                    self.addBuilding(self.constructing)
-                    self.owner.addMessage("Finished building %s on %s" % (self.constructing.name, self.name))
-                    self.build_points = 0
-                    self.constructing = None
-
+        self.build_points += self.work_points()
+        if self.con_build and self.con_build.cost >= 0:
+            if self.build_points >= self.con_build.cost:
+                self.addBuilding(self.con_build)
+                self.owner.addMessage("Finished building %s on %s" % (self.con_build.name, self.name))
+                self.build_points = 0
+                self.con_build = None
+        elif self.con_ship:
+            if self.build_points >= self.con_ship.cost:
+                self.addShip(self.con_ship)
+                self.owner.addMessage("Finished constructing %s on %s" % (self.con_ship.name, self.name))
+                self.build_points = 0
+                self.con_ship = None
         self.save()
 
     def maxpop(self):
@@ -254,7 +281,7 @@ class Planet(models.Model):
             b += bld.hook_pop_boost(self)
         for tch in self.owner.know.all():
             b *= tch.hook_pop_growthfacter(self)
-        if self.constructing and self.constructing.name == 'Housing':
+        if self.con_build and self.con_build.name == 'Housing':
             b += 3000 * self.work_points()
         if self.food_points() < 0:
             b -= 50000 * abs(self.food_points())

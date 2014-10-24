@@ -29,7 +29,10 @@
     {% endif %}
     <li> Can build:
         <ul>
-        {% for bld in planet.available_to_build %}
+        {% for design in planet.available_ships %}
+            <li> <a href="{% url 'constructShip' planet.id design.id %}">{{design.name}}</a>
+        {% endfor %}
+        {% for bld in planet.available_buildings %}
             <li> <a href="{% url 'constructBuilding' planet.id bld.id %}">{{bld.name}}{% if bld.cost > 0 %} for {{bld.cost}} {% endif %}</a>
         {% endfor %}
         </ul>
@@ -55,7 +58,12 @@
         <li> Productivity: {{planet.work_generated}}
         <li> Pollution: {{planet.pollution}}
         <li> Nett: {{planet.work_points}}
-        <li> Building: {{planet.constructing.name}} ({{planet.build_points}} / {{planet.constructing.cost}})
+        {% if planet.con_build %}
+            <li> Building: {{planet.con_build.name}} ({{planet.build_points}} / {{planet.con_build.cost}})
+        {% endif %}
+        {% if planet.con_ship %}
+            <li> Building: {{planet.con_ship.name}} ({{planet.build_points}} / {{planet.con_ship.cost}})
+        {% endif %}
         </ul>
     <li> Scientists: {{planet.scientists}}
         {% if planet.scientists %}
