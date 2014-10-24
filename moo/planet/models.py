@@ -5,7 +5,6 @@ from player.models import Player
 from moo.utils import probmap
 from building.models import Building
 import math
-import sys
 
 
 class PlanetCondition(models.Model):
@@ -93,7 +92,6 @@ class Planet(models.Model):
 
     def available_ships(self):
         """ Return a list of ships that can be built on this planet """
-        import sys
         sds = ShipDesign.objects.filter(outdated=False, owner=self.owner)
         sds = ShipDesign.objects.filter(outdated=False)
         available = []
@@ -137,11 +135,10 @@ class Planet(models.Model):
 
     def addShip(self, shp):
         from ship.models import Ship
-        sys.stderr.write("Adding ship %s\n" % shp.name)
-        s = Ship(name='unknown', owner=self, design=shp)
-        s.x = self.x
-        s.y = self.y
-        s.system = self
+        s = Ship(name='unknown', owner=self.owner, design=shp)
+        s.system = self.system
+        s.x = self.system.x
+        s.y = self.system.y
         s.save()
 
     def setSize(self):
@@ -258,7 +255,7 @@ class Planet(models.Model):
                 self.build_points = 0
                 self.con_build = None
         elif self.con_ship:
-            if self.build_points >= self.con_ship.cost:
+            if self.build_points >= self.con_ship.cost():
                 self.addShip(self.con_ship)
                 self.owner.addMessage("Finished constructing %s on %s" % (self.con_ship.name, self.name))
                 self.build_points = 0
