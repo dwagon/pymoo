@@ -1,0 +1,11 @@
+<table border=1>
+    <tr>
+        <td><a href="{% url 'planetDetails' planet.id %}">{{planet.name}}</a></td>
+        <td>{{planet.con_build}} / {{planet.con_ship}}</td>
+        <td>F: {{planet.farmers}} W:{{planet.workers}} S:{{planet.scientists}} U:{{planet.unassigned}}</td>
+        <td> Inc: {{planet.income}} - {{planet.expenses}} = {{planet.profit}}</td>
+        <td> Food: {{planet.food_produced}} - {{planet.food_consumed}} = {{planet.food_points}}</td>
+        <td> {{planet.research_points}} RP </td>
+        <td> Pop: {{planet.population}} (+ {{planet.pop_growth}}) / {{planet.maxpop}} </td>
+    </tr>
+</table>
