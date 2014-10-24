@@ -45,6 +45,21 @@ class ShipFuel(models.Model):
     required = models.ForeignKey(Tech, null=True)
 
 
+class ShipWeapon(models.Model):
+    name = models.CharField(max_length=250)
+    cost = models.IntegerField()
+    damage = models.CharField(max_length=10)
+    space = models.IntegerField()
+    required = models.ForeignKey(Tech, null=True)
+
+
+class ShipSpecial(models.Model):
+    name = models.CharField(max_length=250)
+    cost = models.IntegerField()
+    space = models.IntegerField()
+    required = models.ForeignKey(Tech, null=True)
+
+
 class ShipDesign(models.Model):
     name = models.CharField(max_length=250)
     hull = models.ForeignKey(ShipHull)
@@ -57,6 +72,11 @@ class ShipDesign(models.Model):
     missdefense = models.IntegerField()
     outdated = models.BooleanField(default=False)
     owner = models.ForeignKey(Player, null=True)
+    specials = models.ManyToManyField(ShipSpecial, null=True, default=None, related_name='specials')
+    weapons = models.ManyToManyField(ShipWeapon, null=True, default=None, related_name='weapons')
+
+    def cost(self):
+        return self.hull.cost
 
     def __str__(self):
         return self.name
@@ -78,13 +98,6 @@ class ShipDesign(models.Model):
         return True
 
 
-class ShipSpecial(models.Model):
-    name = models.CharField(max_length=250)
-    required = models.ForeignKey(Tech, null=True)
-    drive = models.ForeignKey(ShipDrive, null=True)
-    fuel = models.ForeignKey(ShipFuel, null=True)
-
-
 class Ship(models.Model):
     name = models.CharField(max_length=250)
     owner = models.ForeignKey(Player)
@@ -92,7 +105,6 @@ class Ship(models.Model):
     x = models.FloatField()
     y = models.FloatField()
     design = models.ForeignKey(ShipDesign, null=True)
-    special = models.ForeignKey(ShipSpecial, null=True)
     destsystem = models.ForeignKey(System, null=True, related_name='destination')
 
     def turn(self):
